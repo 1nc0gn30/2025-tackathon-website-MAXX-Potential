@@ -49,11 +49,35 @@ const prizeTracks = [
   }
 ]
 
+const santaStops = [
+  {
+    city: 'Reykjavík',
+    time: '11:00 PM GMT',
+    detail: 'Sleigh hovering near Hallgrímskirkja with cocoa refuel.'
+  },
+  {
+    city: 'Lagos',
+    time: '12:40 AM WAT',
+    detail: 'Peppermint drop for night-shift crews at the port.'
+  },
+  {
+    city: 'Tokyo',
+    time: '3:15 AM JST',
+    detail: 'Eight tiny reindeer spotted over Shibuya Crossing.'
+  },
+  {
+    city: 'Anchorage',
+    time: '12:30 AM AKST',
+    detail: 'Aurora backdrop unlocked for the northern flyover.'
+  }
+]
+
 function App() {
   return (
     <div className="page">
       <div className="scanline" />
       <div className="light-rope" aria-hidden />
+      <div className="snow-overlay" aria-hidden />
       <div className="ticker">
         <div className="ticker__inner">
           <span>MAXX Potential Tackathon · 1990s Christmas Remix · Build Wild · Ship Bold · Impress Santa&apos;s QA ·</span>
@@ -97,7 +121,10 @@ function App() {
             <p className="terminal">&gt; syncing MAXX spirit... ✔</p>
             <p className="terminal highlight">&gt; ready to tack!</p>
           </div>
-          <div className="window__footer">Press START to deploy joy</div>
+          <div className="window__footer">
+            <span>Press START to deploy joy</span>
+            <a className="btn btn-start" href="#santa-tracker">Start the sleigh tracker</a>
+          </div>
         </div>
       </header>
 
@@ -177,6 +204,72 @@ function App() {
         </div>
       </section>
 
+      <section className="section santa" id="santa-tracker">
+        <div className="section__header">
+          <h2>Watch Santa Fly Around the World</h2>
+          <p className="section__sub">
+            Keep tabs on the big guy with a totally official, absolutely tacky control room. Flashing lights and
+            candy stripes included.
+          </p>
+        </div>
+
+        <div className="santa__layout">
+          <div className="santa__viewer">
+            <div className="viewer__frame">
+              <iframe
+                src="https://www.youtube.com/embed/-pRYW0d9ibw?autoplay=0&mute=1"
+                title="Santa tracker livestream"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+              <div className="viewer__badge">Live-ish • Christmas Eve Control</div>
+            </div>
+            <p className="viewer__caption">Hit play to watch Santa glide across the globe — hotline lights flicker when he moves.</p>
+            <div className="tracker-actions">
+              <a className="btn btn-primary" href="https://www.noradsanta.org/en/" target="_blank" rel="noreferrer">
+                Launch NORAD Tracker
+              </a>
+              <a
+                className="btn btn-ghost"
+                href="https://www.youtube.com/results?search_query=santa+live+tracker"
+                target="_blank"
+                rel="noreferrer"
+              >
+                See Live Cameras
+              </a>
+            </div>
+          </div>
+
+          <div className="santa__details">
+            <div className="card santa__card">
+              <div className="tag">Realtime Sleigh Board</div>
+              <ul className="santa__list">
+                {santaStops.map((stop) => (
+                  <li key={stop.city}>
+                    <div className="santa__time">{stop.time}</div>
+                    <div>
+                      <p className="santa__city">{stop.city}</p>
+                      <p className="santa__note">{stop.detail}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="card santa__card secondary">
+              <div className="tag">Elf Hotline</div>
+              <p className="santa__note">
+                Green lights = Santa moving. Pink lights = cookie break. Gold lights = sleigh selfie opportunity.
+                Keep the webcam ready.
+              </p>
+              <div className="tracker-actions">
+                <a className="btn btn-primary" href="#schedule">Sync your time zones</a>
+                <a className="btn btn-ghost" href="#contact">Ask the Elf Desk</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section className="section prizes" id="prizes">
         <div className="section__header">
           <h2>Prize Tracks</h2>
@@ -201,7 +294,45 @@ function App() {
           </div>
           <div className="cta__actions">
             <a className="btn btn-primary" href="#vibes">Brainstorm Prompts</a>
-            <a className="btn btn-ghost" href="#">Ping the elves</a>
+            <a className="btn btn-ghost" href="#contact">Ping the elves</a>
+          </div>
+        </div>
+      </section>
+
+      <section className="section contact" id="contact">
+        <div className="section__header">
+          <h2>Elf Support Desk</h2>
+          <p className="section__sub">No dead ends here: choose a path and an elf will answer with bells on.</p>
+        </div>
+        <div className="contact__grid">
+          <div className="card contact__card">
+            <div className="tag">Email</div>
+            <p className="contact__note">Send a note with your team name and what you&apos;re building.</p>
+            <a className="btn btn-primary" href="mailto:elves@maxxpotential.com?subject=Tackathon%20Help">Email the elves</a>
+          </div>
+          <div className="card contact__card">
+            <div className="tag">Calendar</div>
+            <p className="contact__note">Book 15 minutes for design feedback or code pairing.</p>
+            <a
+              className="btn btn-ghost"
+              href="https://calendly.com/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Reserve office hours
+            </a>
+          </div>
+          <div className="card contact__card">
+            <div className="tag">Chat</div>
+            <p className="contact__note">Jump into the #tinsel-tech channel for quick answers and GIF trades.</p>
+            <a
+              className="btn btn-primary"
+              href="https://discord.com/channels/@me"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Open the chat room
+            </a>
           </div>
         </div>
       </section>
