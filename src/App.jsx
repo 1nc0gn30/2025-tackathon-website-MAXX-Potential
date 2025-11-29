@@ -46,6 +46,50 @@ const stations = [
     reward: 'Unlocked: Digital snow pet companion',
     clue: 'Came with a keychain and a tiny reset button.',
     zone: 'Arcade'
+  },
+  {
+    id: 'nick-arcade',
+    title: 'Nick Arcade Hotline',
+    sprite: '📞',
+    flavor: 'Rotary phones calling in for slime updates and bonus rounds.',
+    trivia: 'Which green goop made winning contestants famous (and messy)?',
+    answers: ['slime', 'nickelodeon slime'],
+    reward: 'Unlocked: Slime-proof snow boots',
+    clue: 'You better duck when the studio audience chants.',
+    zone: 'Atrium'
+  },
+  {
+    id: 'arcade-lan',
+    title: 'Frosty LAN Party',
+    sprite: '🕹️',
+    flavor: 'Ethernet cables strung like garland over CRT monitors.',
+    trivia: 'Name the classic snowboarding game kids linked up on PlayStation.',
+    answers: ['ssx', 'ssx tricky'],
+    reward: 'Unlocked: Split-screen peppermint trail',
+    clue: 'The announcer yelled “Tricky!” every time you nailed a combo.',
+    zone: 'Cyber Deck'
+  },
+  {
+    id: 'y2k',
+    title: 'Y2K Countdown Bunker',
+    sprite: '⌛',
+    flavor: 'Candle-lit basement with printed internet guides and floppy disks.',
+    trivia: 'What two-digit fix panicked everyone at midnight 1999?',
+    answers: ['y2k', 'millennium bug'],
+    reward: 'Unlocked: Millennium-safe sleigh firmware',
+    clue: 'Bank clocks and airport boards were supposedly doomed.',
+    zone: 'Sublevel'
+  },
+  {
+    id: 'cd-burner',
+    title: 'CD Burner Booth',
+    sprite: '💿',
+    flavor: 'Stacks of blank discs waiting for the ultimate holiday mixtape.',
+    trivia: 'Which file-sharing program spread those jingle jams across dial-up?',
+    answers: ['napster'],
+    reward: 'Unlocked: Lime-green waveform lights',
+    clue: 'Its mascot was a cat with headphones.',
+    zone: 'Food Court'
   }
 ]
 
@@ -65,6 +109,20 @@ const cheatSheet = [
 ]
 
 const TRACKER_API = 'https://api.noradsanta.org/track'
+const TRACKER_FALLBACK = {
+  city: 'Workshop Airspace (cached)',
+  lat: '90.000',
+  lon: '135.000',
+  speed: 'warp-sleigh',
+  eta: 'Loaded after CORS snowstorm'
+}
+
+const defaultProfile = {
+  alias: '',
+  bio: '',
+  favoriteGift: '',
+  flair: '🎄'
+}
 
 const parseSantaPayload = (payload) => {
   if (!payload || typeof payload !== 'object') return null
@@ -104,10 +162,20 @@ function App() {
   const [trackerState, setTrackerState] = useState('loading')
   const [santaSnapshot, setSantaSnapshot] = useState(null)
   const [lastTrackerUpdate, setLastTrackerUpdate] = useState(null)
+  const [trackerError, setTrackerError] = useState('')
   const [wishlistName, setWishlistName] = useState('')
   const [wishlistGift, setWishlistGift] = useState('')
   const [wishOutput, setWishOutput] = useState(null)
   const [secretChallenge, setSecretChallenge] = useState('Hunt for CRT snowglobes hidden behind neon tiles.')
+  const [profile, setProfile] = useState(() => {
+    if (typeof window === 'undefined') return defaultProfile
+    const stored = window.localStorage.getItem('crt-profile')
+    try {
+      return stored ? { ...defaultProfile, ...JSON.parse(stored) } : defaultProfile
+    } catch (error) {
+      return defaultProfile
+    }
+  })
 
   const activeStation = useMemo(
     () => stations.find((station) => station.id === activeId) || stations[0],
@@ -118,6 +186,7 @@ function App() {
 
   const refreshSanta = useCallback(async () => {
     setTrackerState((prev) => (prev === 'ready' ? 'refreshing' : 'loading'))
+    setTrackerError('')
     try {
       const response = await fetch(TRACKER_API, { headers: { accept: 'application/json' } })
       if (!response.ok) throw new Error('Bad response')
@@ -129,7 +198,10 @@ function App() {
       setTrackerState('ready')
     } catch (error) {
       setTrackerState('error')
-      setSantaSnapshot(null)
+      setSantaSnapshot((prev) => prev ?? TRACKER_FALLBACK)
+      setTrackerError(
+        'Live radar is blocked by the browser (CORS snowstorm). Showing cached sleigh vibes until the feed thaws.'
+      )
     }
   }, [])
 
@@ -138,6 +210,11 @@ function App() {
     const id = setInterval(refreshSanta, 60_000)
     return () => clearInterval(id)
   }, [refreshSanta])
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    window.localStorage.setItem('crt-profile', JSON.stringify(profile))
+  }, [profile])
 
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -181,6 +258,10 @@ function App() {
     setWishOutput(
       `${wishlistName.trim()} requested ${wishlistGift.trim()} • ${glitter} • queued at ${timecode} — tape this to the plaza kiosk!`
     )
+  }
+
+  const handleProfileChange = (field, value) => {
+    setProfile((prev) => ({ ...prev, [field]: value }))
   }
 
   return (
@@ -245,6 +326,7 @@ function App() {
                   Live location from a public NORAD Santa endpoint, refreshed every minute. If the API is shy, hop to the
                   official tracker below while we retry.
                 </p>
+                {trackerError ? <p className="tracker__alert">{trackerError}</p> : null}
               </div>
 
               <div className="tracker__grid">
@@ -360,6 +442,61 @@ function App() {
           <p className="section__sub">Print a plaza wish-slip, spin up a secret challenge, and keep the sleigh in sight.</p>
         </div>
         <div className="utilities__grid">
+          <div className="utility__card profile__card">
+            <div className="panel__title">Create Your Plaza Profile</div>
+            <div className="panel__body utility__body">
+              <p className="panel__hint">
+                Saved in your browser sleigh-bag (localStorage). Clearing cache yeets it into the snow — JavaScript on,
+                Adobe Flash installed (jk lol), and you&apos;re golden.
+              </p>
+              <label className="panel__label" htmlFor="profile-name">
+                Plaza alias
+              </label>
+              <input
+                id="profile-name"
+                value={profile.alias}
+                onChange={(event) => handleProfileChange('alias', event.target.value)}
+                placeholder="e.g., CRTCommander"
+              />
+              <label className="panel__label" htmlFor="profile-bio">
+                Holiday flex
+              </label>
+              <input
+                id="profile-bio"
+                value={profile.bio}
+                onChange={(event) => handleProfileChange('bio', event.target.value)}
+                placeholder="90s snack, favorite mall memory, etc."
+              />
+              <label className="panel__label" htmlFor="profile-gift">
+                Dream haul
+              </label>
+              <input
+                id="profile-gift"
+                value={profile.favoriteGift}
+                onChange={(event) => handleProfileChange('favoriteGift', event.target.value)}
+                placeholder="e.g., translucent Game Boy + snow globe"
+              />
+              <label className="panel__label" htmlFor="profile-flair">
+                Flair emoji
+              </label>
+              <input
+                id="profile-flair"
+                value={profile.flair}
+                onChange={(event) => handleProfileChange('flair', event.target.value || '🎄')}
+                maxLength={4}
+              />
+              <div className="profile__preview">
+                <div className="profile__avatar" aria-hidden>
+                  {profile.flair || '🎄'}
+                </div>
+                <div>
+                  <p className="profile__title">{profile.alias || 'Anonymous Mall Elf'}</p>
+                  <p className="profile__meta">{profile.bio || 'Type a line to light up your badge.'}</p>
+                  <p className="profile__gift">Wishlist: {profile.favoriteGift || 'TBD (wrap it in neon)'}</p>
+                </div>
+              </div>
+            </div>
+          </div>
           <div className="utility__card">
             <div className="panel__title">Wish-Slip Printer</div>
             <form className="panel__body utility__body" onSubmit={handlePrintWish}>
