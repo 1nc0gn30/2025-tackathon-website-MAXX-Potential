@@ -65,6 +65,59 @@
   z-index: 1;
 }
 
+.floating-props {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.floating-props__item {
+  position: absolute;
+  opacity: 0.55;
+  filter: saturate(1.1) drop-shadow(0 0 12px rgba(255, 255, 255, 0.2));
+  image-rendering: pixelated;
+  border-radius: 12px;
+  mix-blend-mode: screen;
+  animation: drift 28s linear infinite;
+}
+
+.floating-props__item--0 {
+  top: 10%;
+  left: -8%;
+  animation-delay: 0s;
+}
+
+.floating-props__item--1 {
+  top: 40%;
+  right: -10%;
+  animation-delay: 6s;
+}
+
+.floating-props__item--2 {
+  bottom: 12%;
+  left: -12%;
+  animation-delay: 12s;
+}
+
+.floating-props__item--3 {
+  bottom: 28%;
+  right: -14%;
+  animation-delay: 18s;
+}
+
+@keyframes drift {
+  0% {
+    transform: translateX(0) translateY(0) rotate(-2deg) scale(1);
+  }
+  50% {
+    transform: translateX(18vw) translateY(-6vh) rotate(4deg) scale(1.05);
+  }
+  100% {
+    transform: translateX(36vw) translateY(6vh) rotate(-3deg) scale(1.02);
+  }
+}
+
 @keyframes twinkle {
   0% {
     opacity: 0.18;
@@ -836,6 +889,106 @@
 .mall__bonus {
   color: #9effe8;
   font-weight: 700;
+}
+
+.ecard {
+  position: relative;
+}
+
+.ecard__layout {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.ecard__form {
+  display: grid;
+  gap: 1rem;
+  background: linear-gradient(135deg, rgba(255, 58, 58, 0.15), rgba(26, 138, 59, 0.15));
+  border: 2px dashed rgba(255, 232, 115, 0.5);
+}
+
+.ecard__label {
+  display: grid;
+  gap: 0.5rem;
+  font-weight: 700;
+  color: var(--mint);
+}
+
+.ecard__label input {
+  padding: 0.7rem 0.9rem;
+  border-radius: 14px;
+  border: 2px solid rgba(255, 232, 115, 0.5);
+  background: rgba(11, 13, 20, 0.7);
+  color: #fff;
+  font-size: 0.95rem;
+}
+
+.ecard__stickers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.sticker {
+  background: rgba(255, 232, 115, 0.15);
+  border: 2px solid rgba(255, 232, 115, 0.5);
+  border-radius: 12px;
+  padding: 0.5rem 0.7rem;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.sticker.is-active {
+  background: linear-gradient(135deg, #ff5fd2, #ffe873);
+  color: #0b0d14;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+  transform: translateY(-3px);
+}
+
+.ecard__preview {
+  background: rgba(11, 13, 20, 0.8);
+  border: 3px double rgba(255, 232, 115, 0.6);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+.ecard__preview-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.8rem;
+}
+
+.ecard__hint {
+  color: var(--gold);
+  font-family: 'Press Start 2P', sans-serif;
+  font-size: 0.65rem;
+}
+
+.ecard__screen {
+  min-height: 180px;
+  padding: 1rem;
+  border-radius: 12px;
+  border: 2px solid rgba(255, 232, 115, 0.45);
+  background: repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.05) 0 12px, rgba(255, 255, 255, 0.02) 12px 24px),
+    linear-gradient(180deg, rgba(58, 132, 255, 0.15), rgba(255, 58, 58, 0.12));
+  font-family: 'Press Start 2P', sans-serif;
+  font-size: 0.8rem;
+  color: var(--mint);
+  image-rendering: pixelated;
+  text-shadow: 0 0 12px rgba(158, 255, 232, 0.35);
+}
+
+.ecard__screen p + p {
+  margin-top: 0.45rem;
+}
+
+.ecard__footer {
+  margin-top: 0.8rem;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.9rem;
 }
 
 .chat {
