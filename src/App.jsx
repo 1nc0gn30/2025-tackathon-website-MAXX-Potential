@@ -100,6 +100,45 @@ const toyAds = [
   }
 ]
 
+const pixelNotes = [
+  {
+    title: 'Aurora Scanline',
+    detail: 'Layered gradients shimmer like a 1996 screensaver while stars flicker behind frosty CRT glass.',
+    badge: 'Parallax 01'
+  },
+  {
+    title: 'Arcade Tree Farm',
+    detail: 'Pixel pines stacked with chunky ornaments — hover to feel the wobble like an old joystick.',
+    badge: 'Parallax 02'
+  },
+  {
+    title: 'Snowman LAN Party',
+    detail: '8-bit buddies trading floppy disks and cocoa packets beneath the moonlight.',
+    badge: 'Parallax 03'
+  }
+]
+
+const popupAds = [
+  {
+    title: 'Dial-Up Turbo Man Locator',
+    reference: 'Jingle All The Way hotline',
+    copy: 'Press *67 to reserve the last turbo-powered action figure. Free cassette of jingles while you wait!',
+    extra: 'Buffering elves: 56kbps'
+  },
+  {
+    title: 'Home Alone Security Suite',
+    reference: 'Kevin-approved booby traps',
+    copy: 'Download our blueprint for swinging paint cans, micro machines, and party mix dance alarms.',
+    extra: 'Recommended browser: Netscape 3.0'
+  },
+  {
+    title: 'Buddy the Elf Cookie Pop-Up',
+    reference: 'North Pole sugar rush',
+    copy: 'Enable pop-tart notifications for fresh syrup cookies. Includes free “sing loud” audio clip (.wav).',
+    extra: 'Certified Y2-OK'
+  }
+]
+
 function App() {
   const [chatMessages, setChatMessages] = useState([])
   const [chatName, setChatName] = useState('Elf Hotline Hero')
@@ -210,6 +249,49 @@ function App() {
           </div>
         </div>
       </header>
+
+      <section className="section pixel-yard" id="pixel-yard">
+        <div className="section__header">
+          <h2>Pixel Snowglobe Plaza</h2>
+          <p className="section__sub">
+            Step into a parallax postcard straight from a 1990s shareware disk: pixel trees, snowmen LAN party,
+            and scanline auroras that wobble like CRT glass.
+          </p>
+        </div>
+
+        <div className="pixel-yard__scene" aria-hidden>
+          <div className="pixel-layer pixel-layer--stars" />
+          <div className="pixel-layer pixel-layer--aurora" />
+          <div className="pixel-layer pixel-layer--mountains" />
+          <div className="pixel-layer pixel-layer--trees">
+            <div className="pixel-tree tree--left" />
+            <div className="pixel-tree tree--center" />
+            <div className="pixel-tree tree--right" />
+          </div>
+          <div className="pixel-layer pixel-layer--snowmen">
+            <div className="pixel-snowman snowman--left" />
+            <div className="pixel-snowman snowman--right" />
+          </div>
+          <div className="pixel-layer pixel-layer--foreground">
+            <div className="pixel-path" />
+            <div className="pixel-hud">
+              <div className="hud__chip">CRT SNOW MODE</div>
+              <div className="hud__badge">Parallax: ON</div>
+              <div className="hud__badge">Snow depth: 16-bit</div>
+            </div>
+          </div>
+        </div>
+
+        <div className="pixel-yard__callouts grid">
+          {pixelNotes.map((note) => (
+            <article key={note.title} className="card pixel-card">
+              <div className="tag">{note.badge}</div>
+              <h3>{note.title}</h3>
+              <p>{note.detail}</p>
+            </article>
+          ))}
+        </div>
+      </section>
 
       <section className="section vibes" id="vibes">
         <div className="section__header">
@@ -388,6 +470,35 @@ function App() {
                 <button className="btn btn-primary btn-start">Add to neon cart</button>
               </div>
             </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="section popups" id="popup-ads">
+        <div className="section__header">
+          <h2>Chaotic 90s Christmas Pop-Ups</h2>
+          <p className="section__sub">
+            Like the wild web of 1997, but nicer: neon borders, blinking headers, and movie nods that would make
+            your dial-up modem proud.
+          </p>
+        </div>
+        <div className="popup-grid">
+          {popupAds.map((ad) => (
+            <div key={ad.title} className="popup-card">
+              <div className="popup-card__chrome">
+                <span className="popup-dot" />
+                <span className="popup-dot" />
+                <span className="popup-dot" />
+                <p className="popup-card__ref">{ad.reference}</p>
+              </div>
+              <h3>{ad.title}</h3>
+              <p className="popup-card__copy">{ad.copy}</p>
+              <div className="popup-card__actions">
+                <button className="btn btn-primary">Click loudly</button>
+                <button className="btn btn-ghost">Pretend to close</button>
+              </div>
+              <div className="popup-card__ticker">{ad.extra}</div>
+            </div>
           ))}
         </div>
       </section>

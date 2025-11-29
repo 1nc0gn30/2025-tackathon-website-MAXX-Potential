@@ -903,6 +903,290 @@
   font-weight: 800;
 }
 
+.pixel-yard__scene {
+  position: relative;
+  height: 320px;
+  margin-bottom: 1.4rem;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 2px solid rgba(255, 255, 255, 0.08);
+  background: radial-gradient(circle at 20% 10%, rgba(255, 95, 210, 0.12), transparent 30%),
+    radial-gradient(circle at 80% 5%, rgba(158, 255, 232, 0.14), transparent 32%),
+    linear-gradient(180deg, #0f1224 0%, #0b0d14 60%, #0a0c12 100%);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04), 0 18px 50px rgba(0, 0, 0, 0.45);
+}
+
+.pixel-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  animation: floaty 12s ease-in-out infinite alternate;
+}
+
+.pixel-layer--stars {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.6) 1px, transparent 1px),
+    radial-gradient(rgba(255, 255, 255, 0.35) 1px, transparent 1px);
+  background-size: 140px 140px, 90px 90px;
+  background-position: 0 0, 50px 80px;
+  mix-blend-mode: screen;
+  opacity: 0.7;
+}
+
+.pixel-layer--aurora {
+  background: linear-gradient(135deg, rgba(158, 255, 232, 0.16), transparent 40%),
+    linear-gradient(200deg, rgba(255, 95, 210, 0.14), transparent 45%);
+  filter: blur(10px);
+  animation-duration: 18s;
+}
+
+.pixel-layer--mountains {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0 10%, transparent 45%),
+    repeating-linear-gradient(135deg, #171b30 0 18px, #101427 18px 36px, #0c0f22 36px 54px);
+  clip-path: polygon(0 55%, 20% 42%, 35% 52%, 50% 38%, 65% 50%, 80% 42%, 100% 55%, 100% 100%, 0 100%);
+  opacity: 0.9;
+  animation-duration: 22s;
+}
+
+.pixel-layer--trees {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: end;
+  padding: 0 1.2rem 1.8rem;
+  gap: 1rem;
+  animation-duration: 16s;
+}
+
+.pixel-tree {
+  height: 140px;
+  width: 100%;
+  max-width: 130px;
+  margin: 0 auto;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.15) 0 10%, transparent 30%),
+    linear-gradient(150deg, rgba(0, 0, 0, 0.12) 20%, transparent 55%),
+    repeating-linear-gradient(180deg, #0cb472 0 12px, #079c63 12px 24px);
+  clip-path: polygon(50% 0%, 80% 28%, 65% 28%, 85% 50%, 68% 50%, 88% 72%, 60% 72%, 78% 100%, 22% 100%, 40% 72%, 12% 72%, 32% 50%, 15% 50%, 35% 28%, 20% 28%);
+  box-shadow: 0 0 0 4px #0a0c12, 0 12px 18px rgba(0, 0, 0, 0.45);
+}
+
+.tree--left {
+  transform: translateY(12px) scale(0.9);
+}
+
+.tree--center {
+  transform: translateY(-6px) scale(1.05);
+}
+
+.tree--right {
+  transform: translateY(8px) scale(0.95);
+}
+
+.pixel-layer--snowmen {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 2rem 1.5rem;
+  align-items: flex-end;
+  animation-duration: 14s;
+}
+
+.pixel-snowman {
+  width: 90px;
+  height: 120px;
+  background:
+    radial-gradient(circle at 50% 25%, #0b0d14 2px, transparent 3px),
+    radial-gradient(circle at 40% 30%, #0b0d14 2px, transparent 3px),
+    radial-gradient(circle at 56% 42%, #ff5fd2 5px, transparent 7px),
+    radial-gradient(circle at 50% 68%, #ffd166 6px, transparent 8px),
+    radial-gradient(circle at 50% 35%, #f7f1e1 18px, transparent 19px),
+    radial-gradient(circle at 50% 70%, #f7f1e1 28px, transparent 29px);
+  border-radius: 12px;
+  position: relative;
+  box-shadow: 0 10px 18px rgba(0, 0, 0, 0.4);
+}
+
+.pixel-snowman::after {
+  content: '';
+  position: absolute;
+  inset: auto 20% -16px;
+  height: 14px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.3), rgba(158, 255, 232, 0.5), rgba(255, 255, 255, 0.3));
+  filter: blur(8px);
+  opacity: 0.6;
+}
+
+.snowman--left {
+  transform: translateY(10px) scale(0.9);
+}
+
+.snowman--right {
+  transform: translateY(4px) scale(1.05);
+}
+
+.pixel-layer--foreground {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 0 1.2rem 0.8rem;
+  background: linear-gradient(180deg, transparent 0%, rgba(255, 255, 255, 0.04) 12%, rgba(255, 255, 255, 0.12) 100%);
+  animation-duration: 10s;
+}
+
+.pixel-path {
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 85%;
+  height: 110px;
+  background: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.1) 0 12px, rgba(255, 255, 255, 0.18) 12px 24px);
+  filter: blur(6px);
+  opacity: 0.6;
+}
+
+.pixel-hud {
+  position: relative;
+  display: flex;
+  gap: 0.6rem;
+  z-index: 2;
+  padding: 0.75rem 1rem;
+  border-radius: 14px;
+  background: rgba(11, 13, 20, 0.75);
+  border: 1px dashed rgba(255, 255, 255, 0.12);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.45);
+}
+
+.hud__chip,
+.hud__badge {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.75rem;
+  padding: 0.45rem 0.7rem;
+  border-radius: 10px;
+}
+
+.hud__chip {
+  background: linear-gradient(90deg, #0cb472, #9effe8);
+  color: #0b0d14;
+}
+
+.hud__badge {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--frost);
+}
+
+.pixel-yard__callouts {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.pixel-card h3 {
+  color: var(--gold);
+}
+
+.pixel-card:hover {
+  transform: translateY(-3px);
+  transition: transform 200ms ease;
+}
+
+.popups .section__header h2 {
+  text-shadow: 0 0 12px rgba(255, 95, 210, 0.4);
+}
+
+.popup-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+}
+
+.popup-card {
+  background: linear-gradient(180deg, #0f1224 0%, #0b0d14 80%);
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  border-radius: 14px;
+  box-shadow: 0 18px 30px rgba(0, 0, 0, 0.45), inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  padding: 1rem 1rem 0.9rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.popup-card::after {
+  content: '';
+  position: absolute;
+  inset: -40% -20%;
+  background: radial-gradient(circle, rgba(255, 209, 102, 0.12), transparent 45%);
+  opacity: 0.5;
+  filter: blur(6px);
+}
+
+.popup-card h3 {
+  position: relative;
+  z-index: 1;
+  font-size: 1rem;
+  margin: 0.4rem 0 0.35rem;
+  color: var(--mint);
+}
+
+.popup-card__copy {
+  position: relative;
+  z-index: 1;
+  color: #d8e6ff;
+  margin-bottom: 0.8rem;
+}
+
+.popup-card__actions {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.popup-card__chrome {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.55rem;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #ff5fd2, #ffd166, #9effe8);
+  color: #0b0d14;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.popup-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: #0b0d14;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.2);
+}
+
+.popup-card__ref {
+  margin-left: auto;
+  font-size: 0.75rem;
+}
+
+.popup-card__ticker {
+  position: relative;
+  z-index: 1;
+  margin-top: 0.6rem;
+  padding: 0.45rem 0.6rem;
+  border-radius: 10px;
+  border: 1px dashed rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.04);
+  font-family: 'Press Start 2P', sans-serif;
+  font-size: 0.7rem;
+  color: var(--gold);
+}
+
+@keyframes floaty {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(12px);
+  }
+}
+
 .footer {
   margin: 0 1.5rem 1.5rem;
 }
