@@ -48,12 +48,20 @@
   display: grid;
   grid-template-columns: 1.4fr 1fr;
   gap: 1.5rem;
+  overflow: hidden;
 }
 
 .hero__text h1 {
   font-size: clamp(1.8rem, 4vw, 2.8rem);
   color: #9effe8;
   text-shadow: 0 0 12px rgba(158, 255, 232, 0.5);
+}
+
+.crt-glow {
+  color: #ffe873;
+  display: inline-block;
+  margin-left: 0.4rem;
+  filter: drop-shadow(0 0 6px rgba(255, 231, 115, 0.6));
 }
 
 .eyebrow {
@@ -67,6 +75,23 @@
 .lede {
   color: #fef3db;
   max-width: 60ch;
+}
+
+.hero__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0.6rem 0 1rem;
+}
+
+.chip {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 231, 115, 0.2));
+  border: 1px dashed rgba(255, 231, 115, 0.5);
+  padding: 0.35rem 0.75rem;
+  border-radius: 10px;
+  font-weight: 700;
+  color: #0b0f14;
+  text-shadow: 0 1px 4px rgba(255, 231, 115, 0.35);
 }
 
 .hero__cta {
@@ -101,9 +126,60 @@
   color: #fef9f2;
 }
 
+.btn-secondary {
+  background: linear-gradient(90deg, rgba(0, 255, 200, 0.25), rgba(255, 47, 210, 0.3));
+  color: #ffe873;
+  box-shadow: 0 0 0 2px rgba(255, 47, 210, 0.25);
+}
+
 .btn:hover {
   transform: translateY(-2px);
   border-color: rgba(255, 255, 255, 0.5);
+}
+
+.hero__ticker {
+  position: relative;
+  border: 2px solid rgba(255, 231, 115, 0.5);
+  background: linear-gradient(90deg, rgba(0, 255, 200, 0.12), rgba(255, 47, 210, 0.12));
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35), inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+  margin-bottom: 0.75rem;
+}
+
+.ticker__glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 20% 50%, rgba(255, 231, 115, 0.2), transparent 40%),
+    radial-gradient(circle at 80% 50%, rgba(0, 255, 200, 0.2), transparent 40%);
+  filter: blur(12px);
+  pointer-events: none;
+}
+
+.ticker__content {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.82rem;
+  text-transform: uppercase;
+}
+
+.ticker__label {
+  padding: 0.35rem 0.6rem;
+  background: rgba(255, 47, 210, 0.2);
+  border-radius: 8px;
+  border: 1px dashed rgba(255, 231, 115, 0.6);
+}
+
+.ticker__message {
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+  animation: marquee 16s linear infinite;
 }
 
 .progress {
@@ -139,6 +215,84 @@
   overflow: hidden;
 }
 
+.hero__action-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 0.85rem;
+  margin-top: 1rem;
+}
+
+.action-card {
+  background: rgba(0, 0, 0, 0.45);
+  border-radius: 12px;
+  border: 1px dashed rgba(255, 231, 115, 0.35);
+  padding: 0.9rem 1rem;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+.action-card--holo {
+  background: linear-gradient(135deg, rgba(0, 255, 200, 0.12), rgba(255, 47, 210, 0.12));
+  border: 1px solid rgba(158, 255, 232, 0.35);
+}
+
+.action-card__title {
+  margin: 0 0 0.3rem;
+  font-weight: 800;
+  color: #ffe873;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.action-card__body {
+  margin: 0 0 0.6rem;
+  color: #d8f6ff;
+  line-height: 1.5;
+}
+
+.hero__controls {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.meter-row {
+  display: grid;
+  grid-template-columns: 90px 1fr auto;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.5rem;
+}
+
+.meter__label {
+  font-weight: 700;
+  color: #9effe8;
+}
+
+.meter__bar {
+  position: relative;
+  height: 10px;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.meter__fill {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, #ffe873, #ff2fd2);
+  animation: meterPulse 1.6s ease-in-out infinite;
+}
+
+.meter__fill--alt {
+  background: linear-gradient(90deg, #9effe8, #00ffc8);
+}
+
+.meter__value {
+  font-weight: 800;
+  color: #ffe873;
+}
+
 .panel__title {
   background: linear-gradient(90deg, #1c203d, #2c3454);
   padding: 0.85rem 1.1rem;
@@ -162,10 +316,128 @@
   margin: 0;
 }
 
+.hero__aurora {
+  position: absolute;
+  inset: -30%;
+  background: radial-gradient(circle at 20% 20%, rgba(255, 47, 210, 0.18), transparent 30%),
+    radial-gradient(circle at 80% 20%, rgba(0, 255, 200, 0.22), transparent 32%),
+    radial-gradient(circle at 50% 70%, rgba(255, 232, 115, 0.14), transparent 35%);
+  filter: blur(18px);
+  animation: auroraDrift 16s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.hero__halo {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 20%, rgba(255, 255, 255, 0.08), transparent 35%);
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+.hero__garland {
+  position: absolute;
+  top: 0.4rem;
+  left: 0.6rem;
+  right: 0.6rem;
+  display: grid;
+  grid-template-columns: repeat(18, 1fr);
+  gap: 0.35rem;
+}
+
+.garland__bulb {
+  width: 100%;
+  height: 10px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #ff2fd2, #ffe873);
+  box-shadow: 0 0 12px rgba(255, 232, 115, 0.65);
+  animation: blink 1.4s ease-in-out infinite;
+}
+
+.hero__snow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.snowflake {
+  position: absolute;
+  top: -10%;
+  left: 0;
+  width: 6px;
+  height: 6px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.6);
+  animation: snow 8s linear infinite;
+  opacity: 0.8;
+}
+
+.snowflake:nth-child(odd) {
+  width: 8px;
+  height: 8px;
+  animation-duration: 10s;
+}
+
+.snowflake:nth-child(even) {
+  animation-duration: 7s;
+}
+
 .section {
   position: relative;
   z-index: 2;
   margin: clamp(1.2rem, 4vw, 2.5rem) clamp(1.25rem, 5vw, 3rem);
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(10%);
+  }
+  100% {
+    transform: translateX(-110%);
+  }
+}
+
+@keyframes auroraDrift {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+@keyframes snow {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  100% {
+    transform: translate3d(100vw, 110vh, 0) rotate(180deg);
+  }
+}
+
+@keyframes meterPulse {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 6px rgba(255, 231, 115, 0.7));
+  }
+  50% {
+    filter: drop-shadow(0 0 14px rgba(0, 255, 200, 0.8));
+  }
 }
 
 .section__header {
