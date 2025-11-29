@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react'
 import './App.css'
 
 const vibeShots = [
@@ -72,7 +73,89 @@ const santaStops = [
   }
 ]
 
+const toyAds = [
+  {
+    name: 'Moon Boots Mega Bounce',
+    price: '$19.95',
+    img: 'https://images.unsplash.com/photo-1456948927030-1c05fcd31e48?auto=format&fit=crop&w=640&q=80',
+    pitch: 'Fresh from the neon mall arcade! Jump like you just won 500 prize tickets and glow under blacklights.',
+    store: 'Galaxy Gumball & Toy Co.',
+    bonus: 'Free holographic sticker sheet with every pair!'
+  },
+  {
+    name: 'CyberTalk Walkie Twins',
+    price: '$14.99',
+    img: 'https://images.unsplash.com/photo-1520694478166-daaaaec95b69?auto=format&fit=crop&w=640&q=80',
+    pitch: 'Crystal-clear backyard comms with turbo antennas. Whisper like a spy, shout like a DJ — static never sounded so cool.',
+    store: 'Mall Madness MegaMart',
+    bonus: 'Includes glow shoelace lanyards and a VIP cassette mixtape.'
+  },
+  {
+    name: 'Pixel Pet Pals Deluxe',
+    price: '$24.50',
+    img: 'https://images.unsplash.com/photo-1455659817273-f96807779a8a?auto=format&fit=crop&w=640&q=80',
+    pitch: 'Feed it, groom it, unlock 8-bit dance parties. The locker accessory every 1997 legend bragged about.',
+    store: 'Totally Toys Outlet',
+    bonus: 'Batteries AND a mystery egg charm included — because we love you.'
+  }
+]
+
 function App() {
+  const [chatMessages, setChatMessages] = useState([])
+  const [chatName, setChatName] = useState('Elf Hotline Hero')
+  const [chatInput, setChatInput] = useState('')
+  const [chatStatus, setChatStatus] = useState('Connecting sleigh bells...')
+  const chatBoxRef = useRef(null)
+
+  const fetchMessages = async () => {
+    try {
+      const res = await fetch('/.netlify/functions/chat')
+      if (!res.ok) throw new Error('Network')
+      const data = await res.json()
+      setChatMessages(data.messages || [])
+      setChatStatus('Live via Netlify Functions')
+    } catch (error) {
+      setChatStatus('Offline — jingles paused')
+    }
+  }
+
+  useEffect(() => {
+    fetchMessages()
+    const interval = setInterval(fetchMessages, 3500)
+    return () => clearInterval(interval)
+  }, [])
+
+  useEffect(() => {
+    if (chatBoxRef.current) {
+      chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight
+    }
+  }, [chatMessages])
+
+  const sendMessage = async (event) => {
+    event.preventDefault()
+    if (!chatInput.trim()) return
+
+    const body = {
+      name: chatName.trim() || 'Mystery Elf',
+      message: chatInput.trim()
+    }
+
+    setChatStatus('Sending sparkle...')
+    try {
+      const res = await fetch('/.netlify/functions/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      })
+      if (!res.ok) throw new Error('Send failed')
+      setChatInput('')
+      fetchMessages()
+      setChatStatus('Message delivered!')
+    } catch (error) {
+      setChatStatus('Delivery failed — try again?')
+    }
+  }
+
   return (
     <div className="page">
       <div className="scanline" />
@@ -282,6 +365,96 @@ function App() {
               <p>{prize.blurb}</p>
             </div>
           ))}
+        </div>
+      </section>
+
+      <section className="section mall" id="mall">
+        <div className="section__header">
+          <h2>Turbo Tinsel Toy Mall</h2>
+          <p className="section__sub">Peak 90s mall energy: loud colors, louder deals, and unapologetic copywriting.</p>
+        </div>
+        <div className="mall__grid">
+          {toyAds.map((toy) => (
+            <article key={toy.name} className="mall__card">
+              <div className="mall__image-frame">
+                <img src={toy.img} alt={toy.name} />
+                <div className="mall__price-tag">{toy.price}</div>
+              </div>
+              <div className="mall__content">
+                <div className="mall__eyebrow">{toy.store}</div>
+                <h3>{toy.name}</h3>
+                <p className="mall__pitch">{toy.pitch}</p>
+                <p className="mall__bonus">{toy.bonus}</p>
+                <button className="btn btn-primary btn-start">Add to neon cart</button>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="section chat" id="chat">
+        <div className="section__header">
+          <h2>Live Elf Chatroom</h2>
+          <p className="section__sub">Powered by Netlify Functions and relentless holiday optimism.</p>
+        </div>
+        <div className="chat__layout">
+          <div className="chat__panel">
+            <div className="chat__status">{chatStatus}</div>
+            <div className="chat__window" ref={chatBoxRef}>
+              {chatMessages.length === 0 ? (
+                <p className="chat__empty">Booting the hotline... drop the first message!</p>
+              ) : (
+                chatMessages.map((entry) => (
+                  <div key={entry.id} className="chat__bubble">
+                    <div className="chat__meta">
+                      <span className="chat__name">{entry.name}</span>
+                      <span className="chat__time">{new Date(entry.timestamp).toLocaleTimeString()}</span>
+                    </div>
+                    <p>{entry.message}</p>
+                  </div>
+                ))
+              )}
+            </div>
+
+            <form className="chat__form" onSubmit={sendMessage}>
+              <div className="chat__row">
+                <label className="chat__label">
+                  Handle
+                  <input value={chatName} onChange={(e) => setChatName(e.target.value)} placeholder="Elf codename" />
+                </label>
+                <label className="chat__label">
+                  Message
+                  <input
+                    value={chatInput}
+                    onChange={(e) => setChatInput(e.target.value)}
+                    placeholder="Type your festive update"
+                  />
+                </label>
+              </div>
+              <div className="chat__actions">
+                <p className="chat__hint">Updates every 3.5s — perfect for gif swaps and quick debugging.</p>
+                <button type="submit" className="btn btn-primary">
+                  Drop message
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <aside className="chat__aside card">
+            <div className="tag">Netlify Function Flow</div>
+            <ul className="chat__list">
+              <li>
+                <strong>POST</strong> to <code>/.netlify/functions/chat</code> with your handle + note.
+              </li>
+              <li>
+                Messages live in-memory on the function — lightweight, quick, and delightfully ephemeral.
+              </li>
+              <li>
+                Frontend polls on a 90s style interval so you always see the latest sleigh-side banter.
+              </li>
+            </ul>
+            <p className="chat__cta">Ship to Netlify and this room lights up instantly for your crew.</p>
+          </aside>
         </div>
       </section>
 
