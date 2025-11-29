@@ -2,84 +2,60 @@ import { useEffect, useRef, useState } from 'react'
 import './App.css'
 
 const tickerMessages = [
-  {
-    icon: '📟',
-    text: 'Pager alert: Santa hotline is live — dial 1-995-HOHO for the latest mall gossip.',
-    tag: 'Elf Desk'
-  },
-  {
-    icon: '💽',
-    text: 'VHS rewind reminder: Record the “Very Special Snow Day” marathon at 7pm sharp.',
-    tag: 'Channel 25'
-  },
-  {
-    icon: '🧊',
-    text: 'Frosting forecast: Glitter storm expected in the GeoCities food court, bring shades.',
-    tag: 'Weather Net'
-  },
-  {
-    icon: '🎶',
-    text: 'Boom box battle: upload your cheesiest Jingle Bell .wav for the loudest mall mix.',
-    tag: 'Mixtape'
-  },
-  {
-    icon: '🧝‍♂️',
-    text: 'Elf LAN party tonight — BYO floppy, earn stickers for every animated cursor shared.',
-    tag: 'LAN 95'
-  },
-  {
-    icon: '🕹️',
-    text: 'Arcade high score unlocked: 999,999 candy canes — show your receipt at the gift wrap bar.',
-    tag: 'Game Zone'
-  }
+  { icon: '📟', text: 'Santa hotline blinking — pager code 1995.', tag: 'Elf Desk' },
+  { icon: '💽', text: 'VHS rewind alert: Snow Day marathon queued.', tag: 'Channel 25' },
+  { icon: '🧊', text: 'CRT frost mode toggled. Glitter storm incoming.', tag: 'Weather Net' },
+  { icon: '🎶', text: 'Boom box battle: drop your cheesiest .wav.', tag: 'Mixtape' },
+  { icon: '🧝‍♂️', text: 'Elf LAN party online. Trade cursors, earn stickers.', tag: 'LAN 95' },
+  { icon: '🕹️', text: 'Arcade high score: 999,999 candy canes.', tag: 'Game Zone' }
 ]
 
 const vibeShots = [
   {
     title: 'Mall Santa Glam',
-    note: 'Layer glitter GIF borders, blinking text, and a boombox of sleigh bell MIDIs.',
+    note: 'Glitter GIF borders + boombox sleigh bells.',
     tag: 'Bedazzle'
   },
   {
     title: 'Netscape North Pole',
-    note: 'Give every button a candy-cane bevel and every link a starry underline animation.',
+    note: 'Candy-cane bevels and starry underline loops.',
     tag: 'Browser Wars'
   },
   {
     title: 'Snow Day Stickers',
-    note: 'Scatter pixel art stockings, animated icicles, and “Best Viewed in 640x480” badges.',
+    note: 'Pixel stockings, animated icicles, 640x480 pride.',
     tag: 'Desktop Ready'
   },
   {
     title: 'Channel 25 Cheer',
-    note: 'Write copy like a TV guide crawl for holiday specials, sweepstakes, and VHS giveaways.',
+    note: 'TV guide crawls, sweepstakes, VHS promos.',
     tag: 'Retro Copy'
   }
 ]
 
 const schedule = [
-  { time: 'Dec 5', detail: 'Kickoff call + awkward office sweater fashion show' },
-  { time: 'Dec 12-16', detail: 'Build sprint — pile on glitter, GIFs, and marquee text' },
-  { time: 'Dec 22', detail: 'Submissions freeze before the big mall rush' },
-  { time: 'Dec 23', detail: 'Live demo + VHS-style crowd voting' }
+  { time: 'Dec 5', detail: 'Kickoff + sweater runway' },
+  { time: 'Dec 12-16', detail: 'Build sprint — glitter everything' },
+  { time: 'Dec 22', detail: 'Submissions freeze' },
+  { time: 'Dec 23', detail: 'Live demo + VHS voting' }
 ]
 
 const prizeTracks = [
   {
     name: 'Yule Log Overload',
-    blurb: 'Most gloriously over-the-top visuals — blinking lights required.'
+    blurb: 'Most gloriously over-the-top visuals.'
   },
   {
     name: 'Elf Engineer',
-    blurb: 'Smartest 90s tech throwback hiding behind the glitter.'
+    blurb: 'Smartest 90s tech throwback.'
   },
   {
     name: 'Retro Rizz',
-    blurb: 'Pure mall-rat charm with sassy copy and pop-up delight.'
+    blurb: 'Pure mall-rat charm and pop-up delight.'
   },
   {
     name: 'Frostbite Finish',
-    blurb: 'Tackiness with polish: responsive, accessible, and fast to load on dial-up.'
+    blurb: 'Tackiness with polish and speed.'
   }
 ]
 
@@ -87,22 +63,22 @@ const santaStops = [
   {
     city: 'New York City',
     time: '11:00 PM EST',
-    detail: 'Sleigh circles Radio City while the Rockettes kick in pixel-perfect sync.'
+    detail: 'Sleigh circles Radio City — Rockettes in sync.'
   },
   {
     city: 'Chicago',
     time: '11:45 PM CST',
-    detail: 'Hot cocoa pit stop next to the 1996 window displays on State Street.'
+    detail: 'Hot cocoa stop near State Street windows.'
   },
   {
     city: 'Denver',
     time: '12:20 AM MST',
-    detail: 'Snowboard reruns on tube TVs while reindeer refuel on peppermint oats.'
+    detail: 'Tube TV reruns while reindeer refuel.'
   },
   {
     city: 'Anchorage',
     time: '12:50 AM AKST',
-    detail: 'Aurora backdrop unlocked for the northern flyover and a frosty Polaroid moment.'
+    detail: 'Aurora unlocked for a frosty Polaroid.'
   }
 ]
 
@@ -111,42 +87,42 @@ const toyAds = [
     name: 'Jingle Jam Boombox',
     price: '$19.95',
     img: 'https://images.unsplash.com/photo-1464375117522-1311d6a5b81f?auto=format&fit=crop&w=640&q=80',
-    pitch: 'Blast cassette carols, record your own “Ho Ho Ho,” and watch the equalizer dance like a mall kiosk demo.',
+    pitch: 'Blast cassette carols and watch the equalizer dance.',
     store: 'Snow Mall Music Hut',
-    bonus: 'Free pack of glow-in-the-dark AA batteries!'
+    bonus: 'Includes glow-in-the-dark batteries.'
   },
   {
     name: 'Reindeer Talkies',
     price: '$14.99',
     img: 'https://images.unsplash.com/photo-1525182008055-f88b95ff7980?auto=format&fit=crop&w=640&q=80',
-    pitch: 'Crystal-clear backyard comms with candy antennas. Whisper secret elf codes or page Mom for cocoa refills.',
+    pitch: 'Crystal-clear backyard comms with candy antennas.',
     store: 'Holiday Super K',
-    bonus: 'Includes frosty sticker sheet and a “Call Santa” hotline card.'
+    bonus: 'Sticker sheet + “Call Santa” hotline card.'
   },
   {
     name: 'Pixel Pet Caroler',
     price: '$24.50',
     img: 'https://images.unsplash.com/photo-1455659817273-f96807779a8a?auto=format&fit=crop&w=640&q=80',
-    pitch: 'Feed it gingerbread pixels, unlock 8-bit jingles, and clip it to your denim backpack like it’s 1997.',
+    pitch: '8-bit jingles you can clip to your denim backpack.',
     store: 'North Pole Outlet',
-    bonus: 'Batteries and a glitter lanyard charm included — no coal here.'
+    bonus: 'Batteries and glitter lanyard included.'
   }
 ]
 
 const pixelNotes = [
   {
     title: 'Aurora CRT Snowstorm',
-    detail: 'Layered gradients shimmer like a 1996 screensaver while pixel stars blink behind frosty glass.',
+    detail: 'Screensaver gradients with blinking pixel stars.',
     badge: 'Parallax 01'
   },
   {
     title: 'Arcade Tree Farm',
-    detail: 'Chunky pines stacked with pixel ornaments — wobble like a joystick when you hover.',
+    detail: 'Chunky pines wobble like joystick sprites.',
     badge: 'Parallax 02'
   },
   {
     title: 'Snowman LAN Party',
-    detail: '8-bit buddies trading floppy disks, AOL trials, and hot cocoa packets under VHS static.',
+    detail: '8-bit buddies trading floppy disks and cocoa.',
     badge: 'Parallax 03'
   }
 ]
@@ -155,22 +131,47 @@ const popupAds = [
   {
     title: 'Dial-Up Turbo Sleigh Locator',
     reference: 'NORAD + 1-800-SANTA hotline',
-    copy: 'Press *67 to reserve a turbo-powered action reindeer. Free cassette of jingles while you buffer!',
+    copy: 'Press *67 to reserve a turbo reindeer. Free jingles cassette while you buffer.',
     extra: 'Buffering elves: 56kbps'
   },
   {
     title: 'Home Alone Security Suite',
     reference: 'Kevin-approved booby traps',
-    copy: 'Download blueprints for swinging paint cans, jingle bell alarms, and micro-machine driveway defense.',
+    copy: 'Download paint can blueprints + jingle alarms.',
     extra: 'Recommended browser: Netscape 3.0'
   },
   {
     title: 'Buddy the Elf Cookie Pop-Up',
     reference: 'North Pole sugar rush',
-    copy: 'Enable toaster notifications for fresh syrup cookies. Includes free “sing loud” .wav file.',
+    copy: 'Enable toaster notifications for syrup cookies + free “sing loud” .wav.',
     extra: 'Certified Y2-OK'
   }
 ]
+
+const floatingProps = [
+  {
+    alt: 'Home Alone ornament',
+    src: 'https://images.unsplash.com/photo-1608889175130-8dcf9c7e7f1e?auto=format&fit=crop&w=320&q=80',
+    size: 120
+  },
+  {
+    alt: 'Elf floppy disk',
+    src: 'https://images.unsplash.com/photo-1478720568477-152d9b164e26?auto=format&fit=crop&w=320&q=80',
+    size: 110
+  },
+  {
+    alt: 'Vintage Christmas game box',
+    src: 'https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=320&q=80',
+    size: 130
+  },
+  {
+    alt: 'Tinsel-wrapped controller',
+    src: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=320&q=80',
+    size: 115
+  }
+]
+
+const ecardStickers = ['🎄', '🎁', '🧦', '❄️', '🕹️']
 
 function App() {
   const [chatMessages, setChatMessages] = useState([])
@@ -178,6 +179,9 @@ function App() {
   const [chatInput, setChatInput] = useState('')
   const [chatStatus, setChatStatus] = useState('Connecting sleigh bells...')
   const chatBoxRef = useRef(null)
+  const [ecardMessage, setEcardMessage] = useState('Merry pixels and neon cheer!')
+  const [ecardSignature, setEcardSignature] = useState('- The Retro Crew')
+  const [ecardSticker, setEcardSticker] = useState(ecardStickers[0])
 
   const fetchMessages = async () => {
     try {
@@ -202,6 +206,13 @@ function App() {
       chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight
     }
   }, [chatMessages])
+
+  const shuffleSticker = () => {
+    const index = Math.floor(Math.random() * ecardStickers.length)
+    setEcardSticker(ecardStickers[index])
+  }
+
+  const ecardPreview = `${ecardSticker} ${ecardMessage} ${ecardSticker}\n${ecardSignature}`
 
   const sendMessage = async (event) => {
     event.preventDefault()
@@ -233,6 +244,18 @@ function App() {
       <div className="scanline" />
       <div className="light-rope" aria-hidden />
       <div className="snow-overlay" aria-hidden />
+      <div className="floating-props" aria-hidden>
+        {floatingProps.map((prop, index) => (
+          <img
+            key={prop.alt}
+            className={`floating-props__item floating-props__item--${index}`}
+            src={prop.src}
+            alt={prop.alt}
+            style={{ width: prop.size, height: prop.size }}
+            loading="lazy"
+          />
+        ))}
+      </div>
       <div className="ticker" role="banner" aria-label="Holiday news ticker">
         <div className="ticker__label">1995 Live</div>
         <div className="ticker__inner">
@@ -251,10 +274,7 @@ function App() {
         <div className="hero__content">
           <p className="eyebrow">Broadcasting from the North Pole ISP</p>
           <h1>1995 Tacky Christmas Cyber Plaza</h1>
-          <p className="lede">
-            MAXX Potential invites you to build like it&apos;s dial-up prime time: blinking bulbs, Comic Sans carols,
-            mall Santa energy, and zero boring blocks. Every pixel should feel like a snow-dusted cyber plaza ad.
-          </p>
+          <p className="lede">All signal, no filler — pure neon Christmas chaos.</p>
           <div className="hero__chips">
             <span className="chip">Candy-cane cursor lab</span>
             <span className="chip">CRT snow filter</span>
@@ -271,7 +291,7 @@ function App() {
             </div>
             <div className="meta-card">
               <span className="meta-label">Judging</span>
-              <span className="meta-value">Creativity · Execution · Candy-Cane Chaos</span>
+              <span className="meta-value">Creativity · Execution · Chaos</span>
             </div>
             <div className="meta-card">
               <span className="meta-label">Bring</span>
@@ -297,10 +317,7 @@ function App() {
       <section className="section pixel-yard" id="pixel-yard">
         <div className="section__header">
           <h2>Pixel Snowglobe Plaza</h2>
-          <p className="section__sub">
-            Step into a parallax postcard straight from a 1990s shareware disk: pixel trees, snowmen LAN party,
-            and scanline auroras that wobble like CRT glass.
-          </p>
+          <p className="section__sub">Pixel trees, LAN snowmen, auroras that wobble like CRT glass.</p>
         </div>
 
         <div className="pixel-yard__scene" aria-hidden>
@@ -340,7 +357,7 @@ function App() {
       <section className="section vibes" id="vibes">
         <div className="section__header">
           <h2>Make It Tacky &amp; Proud</h2>
-          <p className="section__sub">Lean into everything delightfully loud — every pixel should scream Christmas morning in 1995.</p>
+          <p className="section__sub">Loud pixels only. Christmas morning in 1995 on repeat.</p>
         </div>
         <div className="grid vibe-grid">
           {vibeShots.map((vibe) => (
@@ -358,11 +375,11 @@ function App() {
           <div className="pane__header">Tinsel Tech Challenge Board</div>
           <div className="pane__body">
             <ul className="list">
-              <li><span>🎄</span>Create a home page that feels like a living-room TV guide for cheesy holiday specials.</li>
-              <li><span>🧊</span>Add frosty hover states, playful cursors, and snowflake trails.</li>
-              <li><span>💾</span>Hide an easter egg (Konami code? hidden link? surprise sleigh bell wav?).</li>
-              <li><span>📟</span>Include at least one “download” style button that triggers a festive pop-up.</li>
-              <li><span>🎁</span>Show a MAXX Potential value baked into the North Pole storyline.</li>
+              <li><span>🎄</span>Living-room TV guide vibes.</li>
+              <li><span>🧊</span>Frosty hover states and playful cursors.</li>
+              <li><span>💾</span>Hide a Konami-style easter egg.</li>
+              <li><span>📟</span>One loud download pop-up.</li>
+              <li><span>🎁</span>Show one MAXX Potential value.</li>
             </ul>
           </div>
         </div>
@@ -398,7 +415,7 @@ function App() {
       <section className="section" id="schedule">
         <div className="section__header">
           <h2>Retro Roadmap</h2>
-          <p className="section__sub">Grab a wall calendar with kittens in Santa hats — these dates matter.</p>
+          <p className="section__sub">Mark these with a Santa-sticker calendar.</p>
         </div>
         <div className="timeline">
           {schedule.map((item) => (
@@ -416,10 +433,7 @@ function App() {
       <section className="section santa" id="santa-tracker">
         <div className="section__header">
           <h2>Watch Santa Fly Around the World</h2>
-          <p className="section__sub">
-            Keep tabs on the big guy with a totally official, absolutely tacky control room. Flashing lights,
-            candy stripes, and VHS static included.
-          </p>
+          <p className="section__sub">Flashy stripes, VHS static, and a Santa cam that never sleeps.</p>
         </div>
 
         <div className="santa__layout">
@@ -467,8 +481,7 @@ function App() {
             <div className="card santa__card secondary">
               <div className="tag">Elf Hotline</div>
               <p className="santa__note">
-                Green lights = Santa moving. Pink lights = cookie break. Gold lights = sleigh selfie opportunity.
-                Keep the webcam ready.
+                Green lights = moving. Pink lights = cookie break. Gold lights = selfie moment.
               </p>
               <div className="tracker-actions">
                 <a className="btn btn-primary" href="#schedule">Sync your time zones</a>
@@ -482,7 +495,7 @@ function App() {
       <section className="section prizes" id="prizes">
         <div className="section__header">
           <h2>Prize Tracks</h2>
-          <p className="section__sub">Four ways to land on Santa&apos;s leaderboard.</p>
+          <p className="section__sub">Four fast tracks to Santa&apos;s leaderboard.</p>
         </div>
         <div className="grid prize-grid">
           {prizeTracks.map((prize) => (
@@ -497,7 +510,7 @@ function App() {
       <section className="section mall" id="mall">
         <div className="section__header">
           <h2>Turbo Tinsel Toy Mall</h2>
-          <p className="section__sub">Peak 90s mall energy: loud colors, louder deals, and unapologetic copywriting.</p>
+          <p className="section__sub">Peak 90s mall energy: loud colors, louder deals.</p>
         </div>
         <div className="mall__grid">
           {toyAds.map((toy) => (
@@ -518,13 +531,57 @@ function App() {
         </div>
       </section>
 
+      <section className="section ecard" id="ecard">
+        <div className="section__header">
+          <h2>Pixel Christmas E-Card Maker</h2>
+          <p className="section__sub">Spin up a tacky card, sign it, and beam it to your team.</p>
+        </div>
+        <div className="ecard__layout">
+          <div className="ecard__form card">
+            <div className="tag">Maker Lab</div>
+            <label className="ecard__label">
+              Message
+              <input value={ecardMessage} onChange={(e) => setEcardMessage(e.target.value)} maxLength={80} />
+            </label>
+            <label className="ecard__label">
+              Signature
+              <input value={ecardSignature} onChange={(e) => setEcardSignature(e.target.value)} maxLength={40} />
+            </label>
+            <div className="ecard__stickers">
+              {ecardStickers.map((sticker) => (
+                <button
+                  key={sticker}
+                  type="button"
+                  className={`sticker ${sticker === ecardSticker ? 'is-active' : ''}`}
+                  onClick={() => setEcardSticker(sticker)}
+                >
+                  {sticker}
+                </button>
+              ))}
+              <button type="button" className="btn btn-ghost" onClick={shuffleSticker}>
+                Shuffle
+              </button>
+            </div>
+          </div>
+          <div className="ecard__preview card">
+            <div className="ecard__preview-header">
+              <span className="tag">Shareware Preview</span>
+              <span className="ecard__hint">Pixel edges: ON</span>
+            </div>
+            <div className="ecard__screen">
+              {ecardPreview.split('\n').map((line) => (
+                <p key={line}>{line}</p>
+              ))}
+            </div>
+            <p className="ecard__footer">Right-click to save or screenshot for your squad.</p>
+          </div>
+        </div>
+      </section>
+
       <section className="section popups" id="popup-ads">
         <div className="section__header">
           <h2>Chaotic 90s Christmas Pop-Ups</h2>
-          <p className="section__sub">
-            Like the wild web of 1997, but nicer: neon borders, blinking headers, and movie nods that would make
-            your dial-up modem proud.
-          </p>
+          <p className="section__sub">Neon borders, blinking headers, Christmas movie nods.</p>
         </div>
         <div className="popup-grid">
           {popupAds.map((ad) => (
@@ -572,9 +629,9 @@ function App() {
             </div>
 
             <form className="chat__form" onSubmit={sendMessage}>
-              <div className="chat__row">
-                <label className="chat__label">
-                  Handle
+            <div className="chat__row">
+              <label className="chat__label">
+                Handle
                   <input value={chatName} onChange={(e) => setChatName(e.target.value)} placeholder="Elf codename" />
                 </label>
                 <label className="chat__label">
@@ -618,7 +675,7 @@ function App() {
           <div>
             <p className="eyebrow">Ready Santa One</p>
             <h2>Boot your tackathon build</h2>
-            <p>Pair with a teammate, sketch wild ideas, and let the pixels fly. The 90s mall Santa called — he wants his sparkle back.</p>
+            <p>Pair up, sketch wild pixels, and ship sparkle.</p>
           </div>
           <div className="cta__actions">
             <a className="btn btn-primary" href="#vibes">Brainstorm Prompts</a>
