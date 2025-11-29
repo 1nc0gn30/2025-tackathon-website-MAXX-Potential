@@ -2,18 +2,20 @@
   position: relative;
   overflow: hidden;
   padding-bottom: 4rem;
+  background: radial-gradient(circle at 20% 15%, rgba(255, 58, 58, 0.12), transparent 40%),
+    radial-gradient(circle at 80% 10%, rgba(255, 232, 115, 0.12), transparent 40%);
 }
 
 .page::before {
   content: '';
   position: fixed;
   inset: 0;
-  background: radial-gradient(circle at 10% 10%, rgba(255, 95, 210, 0.08), transparent 35%),
-    radial-gradient(circle at 80% 15%, rgba(12, 180, 114, 0.08), transparent 30%),
-    repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0 12px, rgba(255, 95, 210, 0.08) 12px 24px, rgba(12, 180, 114, 0.08) 24px 36px);
-  opacity: 0.6;
+  background: repeating-linear-gradient(90deg, rgba(255, 58, 58, 0.12) 0 22px, rgba(255, 255, 255, 0.1) 22px 44px),
+    repeating-linear-gradient(135deg, rgba(255, 47, 210, 0.08) 0 16px, rgba(152, 255, 196, 0.08) 16px 32px);
+  opacity: 0.55;
   pointer-events: none;
   z-index: 0;
+  mix-blend-mode: screen;
 }
 
 .scanline {
@@ -37,17 +39,17 @@
   position: absolute;
   inset: 0;
   background:
-    repeating-linear-gradient(90deg, transparent 0 10px, rgba(255, 255, 255, 0.06) 10px 12px),
-    radial-gradient(circle at 10% 8%, var(--gold) 0 4px, transparent 6px),
-    radial-gradient(circle at 25% 10%, var(--hot-pink) 0 4px, transparent 6px),
-    radial-gradient(circle at 40% 7%, var(--mint) 0 4px, transparent 6px),
-    radial-gradient(circle at 55% 9%, var(--purple) 0 4px, transparent 6px),
-    radial-gradient(circle at 70% 6%, #ff9c73 0 4px, transparent 6px),
-    radial-gradient(circle at 85% 9%, #9effa1 0 4px, transparent 6px),
-    radial-gradient(circle at 95% 8%, #f28bff 0 4px, transparent 6px);
-  opacity: 0.25;
-  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.3));
-  animation: twinkle 3s ease-in-out infinite alternate;
+    repeating-linear-gradient(90deg, transparent 0 12px, rgba(255, 255, 255, 0.12) 12px 16px),
+    radial-gradient(circle at 10% 8%, var(--gold) 0 6px, transparent 8px),
+    radial-gradient(circle at 25% 10%, var(--hot-pink) 0 6px, transparent 8px),
+    radial-gradient(circle at 40% 7%, var(--mint) 0 6px, transparent 8px),
+    radial-gradient(circle at 55% 9%, #ff3a3a 0 6px, transparent 8px),
+    radial-gradient(circle at 70% 6%, #3affff 0 6px, transparent 8px),
+    radial-gradient(circle at 85% 9%, #ffe873 0 6px, transparent 8px),
+    radial-gradient(circle at 95% 8%, #c15bff 0 6px, transparent 8px);
+  opacity: 0.4;
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.4));
+  animation: twinkle 2s ease-in-out infinite alternate;
 }
 
 .snow-overlay {
@@ -88,20 +90,65 @@
   top: 0;
   z-index: 4;
   overflow: hidden;
-  border-bottom: 1px dashed rgba(255, 255, 255, 0.2);
-  background: rgba(11, 13, 20, 0.9);
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: stretch;
+  border-bottom: 3px double rgba(255, 232, 115, 0.6);
+  background: repeating-linear-gradient(45deg, rgba(255, 58, 58, 0.45) 0 12px, rgba(255, 255, 255, 0.16) 12px 24px),
+    rgba(5, 18, 14, 0.9);
   backdrop-filter: blur(5px);
+}
+
+.ticker__label {
+  display: flex;
+  align-items: center;
+  padding: 0.6rem 1rem;
+  background: linear-gradient(120deg, #ff5fd2, #ffe873);
+  color: #0b0d14;
+  font-family: 'Press Start 2P', sans-serif;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  border-right: 3px double rgba(11, 13, 20, 0.6);
+  box-shadow: inset 0 -4px 0 rgba(11, 13, 20, 0.25);
 }
 
 .ticker__inner {
   display: flex;
-  gap: 3rem;
-  padding: 0.4rem 1.5rem;
-  animation: scroll 24s linear infinite;
+  gap: 1.25rem;
+  padding: 0.45rem 1.25rem;
+  min-width: max-content;
+  animation: scroll 30s linear infinite;
   font-family: 'Press Start 2P', sans-serif;
   font-size: 0.65rem;
   color: var(--gold);
   text-transform: uppercase;
+}
+
+.ticker__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.35rem 0.75rem;
+  border: 2px solid rgba(255, 232, 115, 0.5);
+  border-radius: 12px;
+  background: rgba(10, 18, 16, 0.75);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08), 0 10px 25px rgba(0, 0, 0, 0.35);
+  white-space: nowrap;
+}
+
+.ticker__icon {
+  font-size: 0.95rem;
+}
+
+.ticker__tag {
+  padding: 0.1rem 0.35rem;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.15);
+  color: #0b0d14;
+  font-size: 0.55rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  background-image: linear-gradient(90deg, #ffe873, #9effe8);
 }
 
 @keyframes scroll {
@@ -121,17 +168,17 @@
   padding: 3.5rem clamp(1.5rem, 5vw, 3rem);
   margin: clamp(1rem, 4vw, 2.5rem);
   border-radius: 24px;
-  background: linear-gradient(135deg, rgba(255, 95, 210, 0.12), rgba(12, 180, 114, 0.12));
-  border: 2px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 20px 80px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+  background: linear-gradient(135deg, rgba(255, 58, 58, 0.16), rgba(26, 138, 59, 0.18));
+  border: 3px dashed rgba(255, 232, 115, 0.5);
+  box-shadow: 0 20px 80px rgba(0, 0, 0, 0.6), inset 0 0 0 1px rgba(255, 255, 255, 0.1);
   overflow: hidden;
 }
 
 .hero__glow {
   position: absolute;
   inset: -20%;
-  background: radial-gradient(circle at 30% 20%, rgba(158, 255, 232, 0.2), transparent 40%),
-    radial-gradient(circle at 80% 60%, rgba(255, 95, 210, 0.16), transparent 45%);
+  background: radial-gradient(circle at 30% 20%, rgba(255, 232, 115, 0.25), transparent 40%),
+    radial-gradient(circle at 80% 60%, rgba(255, 47, 210, 0.22), transparent 45%);
   filter: blur(28px);
   z-index: 0;
 }
@@ -166,6 +213,26 @@
   margin-bottom: 1.5rem;
 }
 
+.hero__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin-bottom: 1.15rem;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.55rem 0.8rem;
+  border-radius: 12px;
+  background: rgba(11, 13, 20, 0.7);
+  border: 1px solid rgba(255, 232, 115, 0.4);
+  color: var(--mint);
+  font-weight: 700;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12), 0 10px 25px rgba(0, 0, 0, 0.35);
+}
+
 .cta-row {
   display: flex;
   gap: 0.75rem;
@@ -198,9 +265,9 @@
 }
 
 .btn-primary {
-  background: linear-gradient(120deg, #ff5fd2, #ffd166);
+  background: linear-gradient(120deg, #ff3a3a, #ffe873);
   color: #0b0d14;
-  box-shadow: 0 8px 24px rgba(255, 95, 210, 0.35), 0 0 0 1px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 24px rgba(255, 58, 58, 0.35), 0 0 0 1px rgba(0, 0, 0, 0.1);
 }
 
 .btn-ghost {

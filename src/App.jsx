@@ -1,140 +1,173 @@
 import { useEffect, useRef, useState } from 'react'
 import './App.css'
 
+const tickerMessages = [
+  {
+    icon: '📟',
+    text: 'Pager alert: Santa hotline is live — dial 1-995-HOHO for the latest mall gossip.',
+    tag: 'Elf Desk'
+  },
+  {
+    icon: '💽',
+    text: 'VHS rewind reminder: Record the “Very Special Snow Day” marathon at 7pm sharp.',
+    tag: 'Channel 25'
+  },
+  {
+    icon: '🧊',
+    text: 'Frosting forecast: Glitter storm expected in the GeoCities food court, bring shades.',
+    tag: 'Weather Net'
+  },
+  {
+    icon: '🎶',
+    text: 'Boom box battle: upload your cheesiest Jingle Bell .wav for the loudest mall mix.',
+    tag: 'Mixtape'
+  },
+  {
+    icon: '🧝‍♂️',
+    text: 'Elf LAN party tonight — BYO floppy, earn stickers for every animated cursor shared.',
+    tag: 'LAN 95'
+  },
+  {
+    icon: '🕹️',
+    text: 'Arcade high score unlocked: 999,999 candy canes — show your receipt at the gift wrap bar.',
+    tag: 'Game Zone'
+  }
+]
+
 const vibeShots = [
   {
-    title: 'Blinding Bling',
-    note: 'Neon gradients, lens flares, and drop shadows straight out of 1995 screensavers.',
-    tag: 'Glow Mode'
+    title: 'Mall Santa Glam',
+    note: 'Layer glitter GIF borders, blinking text, and a boombox of sleigh bell MIDIs.',
+    tag: 'Bedazzle'
   },
   {
-    title: 'Cyber Caroling',
-    note: 'Mash MIDI jingles, clicky buttons, and cheeky tooltips into one joyful noise.',
-    tag: 'Audio Optional'
+    title: 'Netscape North Pole',
+    note: 'Give every button a candy-cane bevel and every link a starry underline animation.',
+    tag: 'Browser Wars'
   },
   {
-    title: 'Tinsel Tech',
-    note: 'CRT-inspired cards, pixel snow, and glitter borders that Santa would double-tap.',
-    tag: 'UI Flair'
+    title: 'Snow Day Stickers',
+    note: 'Scatter pixel art stockings, animated icicles, and “Best Viewed in 640x480” badges.',
+    tag: 'Desktop Ready'
   },
   {
-    title: 'Office Party Lore',
-    note: 'Show MAXX Potential spirit: celebrate scrappy ideas, teamwork, and bold experiments.',
-    tag: 'Culture'
+    title: 'Channel 25 Cheer',
+    note: 'Write copy like a TV guide crawl for holiday specials, sweepstakes, and VHS giveaways.',
+    tag: 'Retro Copy'
   }
 ]
 
 const schedule = [
-  { time: 'Jan 3', detail: 'Kickoff call + 90s nostalgia icebreakers' },
-  { time: 'Jan 6-10', detail: 'Build sprint — ship something gloriously tacky' },
-  { time: 'Jan 13', detail: 'Submissions freeze at midnight sharp (no Y2K excuses)' },
-  { time: 'Jan 14', detail: 'Live demo + crowd voting' }
+  { time: 'Dec 5', detail: 'Kickoff call + awkward office sweater fashion show' },
+  { time: 'Dec 12-16', detail: 'Build sprint — pile on glitter, GIFs, and marquee text' },
+  { time: 'Dec 22', detail: 'Submissions freeze before the big mall rush' },
+  { time: 'Dec 23', detail: 'Live demo + VHS-style crowd voting' }
 ]
 
 const prizeTracks = [
   {
-    name: 'Snow Globe Showstopper',
-    blurb: 'Most over-the-top visuals — the louder the better.'
+    name: 'Yule Log Overload',
+    blurb: 'Most gloriously over-the-top visuals — blinking lights required.'
   },
   {
     name: 'Elf Engineer',
-    blurb: 'Smartest technical trick hiding inside a cozy sweater.'
+    blurb: 'Smartest 90s tech throwback hiding behind the glitter.'
   },
   {
     name: 'Retro Rizz',
-    blurb: 'Pure 90s attitude: sassy copy, playful interactions, and unapologetic charm.'
+    blurb: 'Pure mall-rat charm with sassy copy and pop-up delight.'
   },
   {
     name: 'Frostbite Finish',
-    blurb: 'Tightest polish across responsiveness, accessibility, and performance.'
+    blurb: 'Tackiness with polish: responsive, accessible, and fast to load on dial-up.'
   }
 ]
 
 const santaStops = [
   {
-    city: 'Reykjavík',
-    time: '11:00 PM GMT',
-    detail: 'Sleigh hovering near Hallgrímskirkja with cocoa refuel.'
+    city: 'New York City',
+    time: '11:00 PM EST',
+    detail: 'Sleigh circles Radio City while the Rockettes kick in pixel-perfect sync.'
   },
   {
-    city: 'Lagos',
-    time: '12:40 AM WAT',
-    detail: 'Peppermint drop for night-shift crews at the port.'
+    city: 'Chicago',
+    time: '11:45 PM CST',
+    detail: 'Hot cocoa pit stop next to the 1996 window displays on State Street.'
   },
   {
-    city: 'Tokyo',
-    time: '3:15 AM JST',
-    detail: 'Eight tiny reindeer spotted over Shibuya Crossing.'
+    city: 'Denver',
+    time: '12:20 AM MST',
+    detail: 'Snowboard reruns on tube TVs while reindeer refuel on peppermint oats.'
   },
   {
     city: 'Anchorage',
-    time: '12:30 AM AKST',
-    detail: 'Aurora backdrop unlocked for the northern flyover.'
+    time: '12:50 AM AKST',
+    detail: 'Aurora backdrop unlocked for the northern flyover and a frosty Polaroid moment.'
   }
 ]
 
 const toyAds = [
   {
-    name: 'Moon Boots Mega Bounce',
+    name: 'Jingle Jam Boombox',
     price: '$19.95',
-    img: 'https://images.unsplash.com/photo-1456948927030-1c05fcd31e48?auto=format&fit=crop&w=640&q=80',
-    pitch: 'Fresh from the neon mall arcade! Jump like you just won 500 prize tickets and glow under blacklights.',
-    store: 'Galaxy Gumball & Toy Co.',
-    bonus: 'Free holographic sticker sheet with every pair!'
+    img: 'https://images.unsplash.com/photo-1464375117522-1311d6a5b81f?auto=format&fit=crop&w=640&q=80',
+    pitch: 'Blast cassette carols, record your own “Ho Ho Ho,” and watch the equalizer dance like a mall kiosk demo.',
+    store: 'Snow Mall Music Hut',
+    bonus: 'Free pack of glow-in-the-dark AA batteries!'
   },
   {
-    name: 'CyberTalk Walkie Twins',
+    name: 'Reindeer Talkies',
     price: '$14.99',
-    img: 'https://images.unsplash.com/photo-1520694478166-daaaaec95b69?auto=format&fit=crop&w=640&q=80',
-    pitch: 'Crystal-clear backyard comms with turbo antennas. Whisper like a spy, shout like a DJ — static never sounded so cool.',
-    store: 'Mall Madness MegaMart',
-    bonus: 'Includes glow shoelace lanyards and a VIP cassette mixtape.'
+    img: 'https://images.unsplash.com/photo-1525182008055-f88b95ff7980?auto=format&fit=crop&w=640&q=80',
+    pitch: 'Crystal-clear backyard comms with candy antennas. Whisper secret elf codes or page Mom for cocoa refills.',
+    store: 'Holiday Super K',
+    bonus: 'Includes frosty sticker sheet and a “Call Santa” hotline card.'
   },
   {
-    name: 'Pixel Pet Pals Deluxe',
+    name: 'Pixel Pet Caroler',
     price: '$24.50',
     img: 'https://images.unsplash.com/photo-1455659817273-f96807779a8a?auto=format&fit=crop&w=640&q=80',
-    pitch: 'Feed it, groom it, unlock 8-bit dance parties. The locker accessory every 1997 legend bragged about.',
-    store: 'Totally Toys Outlet',
-    bonus: 'Batteries AND a mystery egg charm included — because we love you.'
+    pitch: 'Feed it gingerbread pixels, unlock 8-bit jingles, and clip it to your denim backpack like it’s 1997.',
+    store: 'North Pole Outlet',
+    bonus: 'Batteries and a glitter lanyard charm included — no coal here.'
   }
 ]
 
 const pixelNotes = [
   {
-    title: 'Aurora Scanline',
-    detail: 'Layered gradients shimmer like a 1996 screensaver while stars flicker behind frosty CRT glass.',
+    title: 'Aurora CRT Snowstorm',
+    detail: 'Layered gradients shimmer like a 1996 screensaver while pixel stars blink behind frosty glass.',
     badge: 'Parallax 01'
   },
   {
     title: 'Arcade Tree Farm',
-    detail: 'Pixel pines stacked with chunky ornaments — hover to feel the wobble like an old joystick.',
+    detail: 'Chunky pines stacked with pixel ornaments — wobble like a joystick when you hover.',
     badge: 'Parallax 02'
   },
   {
     title: 'Snowman LAN Party',
-    detail: '8-bit buddies trading floppy disks and cocoa packets beneath the moonlight.',
+    detail: '8-bit buddies trading floppy disks, AOL trials, and hot cocoa packets under VHS static.',
     badge: 'Parallax 03'
   }
 ]
 
 const popupAds = [
   {
-    title: 'Dial-Up Turbo Man Locator',
-    reference: 'Jingle All The Way hotline',
-    copy: 'Press *67 to reserve the last turbo-powered action figure. Free cassette of jingles while you wait!',
+    title: 'Dial-Up Turbo Sleigh Locator',
+    reference: 'NORAD + 1-800-SANTA hotline',
+    copy: 'Press *67 to reserve a turbo-powered action reindeer. Free cassette of jingles while you buffer!',
     extra: 'Buffering elves: 56kbps'
   },
   {
     title: 'Home Alone Security Suite',
     reference: 'Kevin-approved booby traps',
-    copy: 'Download our blueprint for swinging paint cans, micro machines, and party mix dance alarms.',
+    copy: 'Download blueprints for swinging paint cans, jingle bell alarms, and micro-machine driveway defense.',
     extra: 'Recommended browser: Netscape 3.0'
   },
   {
     title: 'Buddy the Elf Cookie Pop-Up',
     reference: 'North Pole sugar rush',
-    copy: 'Enable pop-tart notifications for fresh syrup cookies. Includes free “sing loud” audio clip (.wav).',
+    copy: 'Enable toaster notifications for fresh syrup cookies. Includes free “sing loud” .wav file.',
     extra: 'Certified Y2-OK'
   }
 ]
@@ -200,22 +233,33 @@ function App() {
       <div className="scanline" />
       <div className="light-rope" aria-hidden />
       <div className="snow-overlay" aria-hidden />
-      <div className="ticker">
+      <div className="ticker" role="banner" aria-label="Holiday news ticker">
+        <div className="ticker__label">1995 Live</div>
         <div className="ticker__inner">
-          <span>MAXX Potential Tackathon · 1990s Christmas Remix · Build Wild · Ship Bold · Impress Santa&apos;s QA ·</span>
-          <span>MAXX Potential Tackathon · 1990s Christmas Remix · Build Wild · Ship Bold · Impress Santa&apos;s QA ·</span>
+          {[...tickerMessages, ...tickerMessages].map((item, index) => (
+            <div key={`${item.text}-${index}`} className="ticker__item">
+              <span className="ticker__icon" aria-hidden>{item.icon}</span>
+              <span className="ticker__text">{item.text}</span>
+              <span className="ticker__tag">{item.tag}</span>
+            </div>
+          ))}
         </div>
       </div>
 
       <header className="hero">
         <div className="hero__glow" />
         <div className="hero__content">
-          <p className="eyebrow">MAXX Potential Presents</p>
-          <h1>1995 Tinsel Tech Tackathon</h1>
+          <p className="eyebrow">Broadcasting from the North Pole ISP</p>
+          <h1>1995 Tacky Christmas Cyber Plaza</h1>
           <p className="lede">
-            Unleash your inner 90s webmaster. Combine MS Paint chaos, early-internet optimism,
-            and MAXX Potential wit to craft the most delightfully tacky holiday site on the planet.
+            MAXX Potential invites you to build like it&apos;s dial-up prime time: blinking bulbs, Comic Sans carols,
+            mall Santa energy, and zero boring blocks. Every pixel should feel like a snow-dusted cyber plaza ad.
           </p>
+          <div className="hero__chips">
+            <span className="chip">Candy-cane cursor lab</span>
+            <span className="chip">CRT snow filter</span>
+            <span className="chip">Blink tag dance floor</span>
+          </div>
           <div className="cta-row">
             <a className="btn btn-primary" href="#prizes">See Prize Tracks</a>
             <a className="btn btn-ghost" href="#schedule">Add the dates</a>
@@ -223,24 +267,24 @@ function App() {
           <div className="hero__meta">
             <div className="meta-card">
               <span className="meta-label">Theme</span>
-              <span className="meta-value">1990s Christmas Variety Show</span>
+              <span className="meta-value">1990s American Christmas Special</span>
             </div>
             <div className="meta-card">
               <span className="meta-label">Judging</span>
-              <span className="meta-value">Creativity · Execution · Tacky Joy</span>
+              <span className="meta-value">Creativity · Execution · Candy-Cane Chaos</span>
             </div>
             <div className="meta-card">
               <span className="meta-label">Bring</span>
-              <span className="meta-value">Retro polish, new-school craft</span>
+              <span className="meta-value">Retro polish, peppermint pop</span>
             </div>
           </div>
         </div>
         <div className="hero__window">
-          <div className="window__title">Holiday Console v95.exe</div>
+            <div className="window__title">Holiday Console v95.exe</div>
           <div className="window__body">
             <p className="terminal">&gt; booting sleigh... ✔</p>
-            <p className="terminal">&gt; loading glitter... ✔</p>
-            <p className="terminal">&gt; syncing MAXX spirit... ✔</p>
+            <p className="terminal">&gt; loading glitter GIFs... ✔</p>
+            <p className="terminal">&gt; syncing elf pager... ✔</p>
             <p className="terminal highlight">&gt; ready to tack!</p>
           </div>
           <div className="window__footer">
@@ -296,7 +340,7 @@ function App() {
       <section className="section vibes" id="vibes">
         <div className="section__header">
           <h2>Make It Tacky &amp; Proud</h2>
-          <p className="section__sub">Lean into everything delightfully loud — your only limit is your imagination (and maybe good taste).</p>
+          <p className="section__sub">Lean into everything delightfully loud — every pixel should scream Christmas morning in 1995.</p>
         </div>
         <div className="grid vibe-grid">
           {vibeShots.map((vibe) => (
@@ -314,11 +358,11 @@ function App() {
           <div className="pane__header">Tinsel Tech Challenge Board</div>
           <div className="pane__body">
             <ul className="list">
-              <li><span>🎄</span>Create a home page that feels like a living-room TV guide.</li>
-              <li><span>🧊</span>Add frosty hover states and playful cursors.</li>
-              <li><span>💾</span>Hide an easter egg (Konami code? hidden link? surprise gif?).</li>
-              <li><span>📟</span>Include at least one “download” style button that does something fun.</li>
-              <li><span>🎁</span>Show a MAXX Potential value baked into the story.</li>
+              <li><span>🎄</span>Create a home page that feels like a living-room TV guide for cheesy holiday specials.</li>
+              <li><span>🧊</span>Add frosty hover states, playful cursors, and snowflake trails.</li>
+              <li><span>💾</span>Hide an easter egg (Konami code? hidden link? surprise sleigh bell wav?).</li>
+              <li><span>📟</span>Include at least one “download” style button that triggers a festive pop-up.</li>
+              <li><span>🎁</span>Show a MAXX Potential value baked into the North Pole storyline.</li>
             </ul>
           </div>
         </div>
@@ -354,7 +398,7 @@ function App() {
       <section className="section" id="schedule">
         <div className="section__header">
           <h2>Retro Roadmap</h2>
-          <p className="section__sub">Mark your wall calendar with sparkly stickers — these dates matter.</p>
+          <p className="section__sub">Grab a wall calendar with kittens in Santa hats — these dates matter.</p>
         </div>
         <div className="timeline">
           {schedule.map((item) => (
@@ -373,8 +417,8 @@ function App() {
         <div className="section__header">
           <h2>Watch Santa Fly Around the World</h2>
           <p className="section__sub">
-            Keep tabs on the big guy with a totally official, absolutely tacky control room. Flashing lights and
-            candy stripes included.
+            Keep tabs on the big guy with a totally official, absolutely tacky control room. Flashing lights,
+            candy stripes, and VHS static included.
           </p>
         </div>
 
@@ -572,9 +616,9 @@ function App() {
       <section className="cta">
         <div className="cta__content">
           <div>
-            <p className="eyebrow">Ready Player One</p>
+            <p className="eyebrow">Ready Santa One</p>
             <h2>Boot your tackathon build</h2>
-            <p>Pair with a teammate, sketch wild ideas, and let the pixels fly. The 90s called — they want their sparkle back.</p>
+            <p>Pair with a teammate, sketch wild ideas, and let the pixels fly. The 90s mall Santa called — he wants his sparkle back.</p>
           </div>
           <div className="cta__actions">
             <a className="btn btn-primary" href="#vibes">Brainstorm Prompts</a>
@@ -591,12 +635,12 @@ function App() {
         <div className="contact__grid">
           <div className="card contact__card">
             <div className="tag">Email</div>
-            <p className="contact__note">Send a note with your team name and what you&apos;re building.</p>
+            <p className="contact__note">Send a note with your team name and which nostalgic Christmas gag you&apos;re coding.</p>
             <a className="btn btn-primary" href="mailto:elves@maxxpotential.com?subject=Tackathon%20Help">Email the elves</a>
           </div>
           <div className="card contact__card">
             <div className="tag">Calendar</div>
-            <p className="contact__note">Book 15 minutes for design feedback or code pairing.</p>
+            <p className="contact__note">Book 15 minutes for design feedback or code pairing — Santa hats welcome.</p>
             <a
               className="btn btn-ghost"
               href="https://calendly.com/"
@@ -608,7 +652,7 @@ function App() {
           </div>
           <div className="card contact__card">
             <div className="tag">Chat</div>
-            <p className="contact__note">Jump into the #tinsel-tech channel for quick answers and GIF trades.</p>
+            <p className="contact__note">Jump into the #tinsel-tech channel for quick answers, GIF trades, and mixtape swaps.</p>
             <a
               className="btn btn-primary"
               href="https://discord.com/channels/@me"
