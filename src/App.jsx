@@ -105,6 +105,100 @@ const cheatSheet = [
   {
     header: 'TV Guide Tips',
     body: 'Circle your specials with neon highlighter: Frosty, Rudolph claymation, and the infamous grandma reindeer incident.'
+  },
+  {
+    header: 'Mall Santa Intel',
+    body: 'Say “MACY ELF OVERRIDE” at the trivia kiosk to get a reroll on your clue (whispers from a 1998 mall Santa pager).'
+  },
+  {
+    header: 'Arcade Insider',
+    body: 'Input ↑ ↑ ↓ ↓ ← → ← → B A when the snow falls to light up the Nick Arcade hotline sprite for 30 seconds.'
+  }
+]
+
+const christmasApis = [
+  {
+    name: 'iTunes Search API',
+    url: 'https://itunes.apple.com/search?term=christmas+1990s&media=movie',
+    description:
+      'No key needed; query 1990s Christmas movies and TV specials by keyword, media type, and country to surface nostalgia recs.'
+  },
+  {
+    name: 'TVMaze Search',
+    url: 'https://api.tvmaze.com/search/shows?q=christmas',
+    description:
+      'Open API that lists episodes and shows — filter titles with airdate 1990-1999 in your app to build a retro viewing guide.'
+  },
+  {
+    name: 'Open Library Covers',
+    url: 'https://covers.openlibrary.org/b/isbn/0385325770-M.jpg',
+    description:
+      'Serve free cover art for 90s holiday storybooks without auth (swap ISBNs). Great for decorating kiosks or trivia cards.'
+  },
+  {
+    name: 'Open Meteo Snow Forecast',
+    url: 'https://api.open-meteo.com/v1/forecast?latitude=40.71&longitude=-74.00&hourly=snowfall',
+    description:
+      'Free weather feed (no signup) to overlay “incoming flurries” text on the plaza when snowfall > 0 around the user city.'
+  }
+]
+
+const videoOptions = [
+  {
+    id: 'home-alone-cartoon',
+    title: 'Home Alone Animated (1997)',
+    description: 'Pilot clips and commercials stitched together — classic 90s cable vibes.',
+    embedUrl: 'https://www.youtube.com/embed/6K3V-4Pz0ps'
+  },
+  {
+    id: 'muppets',
+    title: 'Muppet Family Christmas (retro TV rip)',
+    description: 'Full broadcast with vintage ads to keep the CRT glow authentic.',
+    embedUrl: 'https://www.youtube.com/embed/oeo-4Wm0d0M'
+  },
+  {
+    id: 'nicktoons',
+    title: 'Nicktoons 1996 Christmas Block',
+    description: 'A mash-up of Hey Arnold, Rugrats, and Rocko holiday segments.',
+    embedUrl: 'https://www.youtube.com/embed/6V6-hwxKF1Q'
+  },
+  {
+    id: 'peewee',
+    title: "Pee-wee's Playhouse Christmas Special",
+    description: 'So many guest stars — the set design is peak tacky perfection.',
+    embedUrl: 'https://www.youtube.com/embed/1M3x6K36Wkc'
+  },
+  {
+    id: 'garfield',
+    title: 'Garfield Christmas (90s TV quality)',
+    description: 'Striped sweater comfort with VHS fuzz for extra nostalgia.',
+    embedUrl: 'https://www.youtube.com/embed/jg2Y8b-kNOg'
+  }
+]
+
+const ecardTemplates = [
+  {
+    id: 'laser-grid',
+    name: 'Laser Grid Snow',
+    accent: '#ff3a8a',
+    background:
+      'linear-gradient(135deg, rgba(255, 58, 138, 0.18), rgba(0, 255, 200, 0.22)), repeating-linear-gradient(45deg, rgba(255,255,255,0.08) 0 8px, transparent 8px 16px)',
+    border: '3px double rgba(255, 232, 115, 0.8)'
+  },
+  {
+    id: 'gingham',
+    name: 'Gingham Gift Wrap',
+    accent: '#ffe873',
+    background:
+      'repeating-linear-gradient(0deg, rgba(255, 232, 115, 0.3) 0 10px, rgba(0,0,0,0.18) 10px 20px), repeating-linear-gradient(90deg, rgba(255, 71, 87, 0.18) 0 10px, transparent 10px 20px)',
+    border: '3px solid rgba(158, 255, 232, 0.9)'
+  },
+  {
+    id: 'frosted',
+    name: 'Frosted CRT Glow',
+    accent: '#9effe8',
+    background: 'radial-gradient(circle at 30% 30%, rgba(158,255,232,0.24), rgba(10,16,28,0.9))',
+    border: '3px dashed rgba(255, 47, 210, 0.8)'
   }
 ]
 
@@ -167,6 +261,11 @@ function App() {
   const [wishlistGift, setWishlistGift] = useState('')
   const [wishOutput, setWishOutput] = useState(null)
   const [secretChallenge, setSecretChallenge] = useState('Hunt for CRT snowglobes hidden behind neon tiles.')
+  const [selectedVideoId, setSelectedVideoId] = useState(videoOptions[0].id)
+  const [ecardTemplateId, setEcardTemplateId] = useState(ecardTemplates[0].id)
+  const [ecardMessage, setEcardMessage] = useState('Meet me at the plaza food court for neon cocoa!')
+  const [ecardTo, setEcardTo] = useState('Snow Friend')
+  const [ecardFrom, setEcardFrom] = useState('Mall Rat 97')
   const [profile, setProfile] = useState(() => {
     if (typeof window === 'undefined') return defaultProfile
     const stored = window.localStorage.getItem('crt-profile')
@@ -262,6 +361,41 @@ function App() {
 
   const handleProfileChange = (field, value) => {
     setProfile((prev) => ({ ...prev, [field]: value }))
+  }
+
+  const selectedVideo = videoOptions.find((video) => video.id === selectedVideoId) ?? videoOptions[0]
+  const selectedTemplate = ecardTemplates.find((template) => template.id === ecardTemplateId) ?? ecardTemplates[0]
+
+  const generateEcardMarkup = () => {
+    return `<!doctype html><html><head><meta charset="utf-8"><title>CRT Plaza E-Card</title><style>
+      body { margin:0; font-family:'Press Start 2P', monospace; background:#0a0f1c; color:#fef9f2; display:flex; align-items:center; justify-content:center; }
+      .card { width: 640px; min-height: 420px; padding: 32px; box-sizing:border-box; display:grid; gap:16px;
+        background: ${selectedTemplate.background}; border:${selectedTemplate.border}; box-shadow:0 18px 60px rgba(0,0,0,0.35), inset 0 0 0 2px rgba(255,255,255,0.08);
+      }
+      .title { font-size:24px; color:${selectedTemplate.accent}; text-shadow:0 0 12px rgba(255,255,255,0.4); margin:0; }
+      .to { font-size:16px; margin:0; }
+      .message { font-size:18px; line-height:1.6; margin:0; }
+      .from { font-size:16px; margin:0; text-align:right; }
+    </style></head><body><div class="card"><p class="title">CRT Plaza Greetings</p><p class="to">To: ${ecardTo}</p><p class="message">${ecardMessage}</p><p class="from">— ${ecardFrom}</p></div></body></html>`
+  }
+
+  const handleDownloadEcard = () => {
+    const blob = new Blob([generateEcardMarkup()], { type: 'text/html' })
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.download = 'crt-plaza-ecard.html'
+    link.click()
+    URL.revokeObjectURL(url)
+  }
+
+  const handlePrintEcard = () => {
+    const popup = window.open('', '_blank', 'width=720,height=900')
+    if (!popup) return
+    popup.document.write(generateEcardMarkup())
+    popup.document.close()
+    popup.focus()
+    popup.print()
   }
 
   return (
@@ -411,6 +545,129 @@ function App() {
             </div>
             <div className="panel__status">{systemMessage}</div>
           </aside>
+        </div>
+      </section>
+
+      <section className="section api" id="api-ideas">
+        <div className="section__header">
+          <h2>Free Christmas Data Streams</h2>
+          <p className="section__sub">
+            Drop-in APIs with no signup to sprinkle live nostalgia data onto your plaza — perfect for 1990s movie trivia or
+            snow warnings.
+          </p>
+        </div>
+        <div className="api__grid">
+          {christmasApis.map((api) => (
+            <article key={api.name} className="api__card">
+              <h3>{api.name}</h3>
+              <p>{api.description}</p>
+              <a className="btn btn-ghost" href={api.url} target="_blank" rel="noreferrer">
+                Try sample endpoint
+              </a>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="section video" id="video-lounge">
+        <div className="section__header">
+          <h2>1990s Christmas Video Lounge</h2>
+          <p className="section__sub">Pick a VHS-worthy YouTube embed and let it loop while you tackle plaza trivia.</p>
+        </div>
+        <div className="video__layout">
+          <div className="video__picker">
+            {videoOptions.map((video) => (
+              <button
+                key={video.id}
+                className={`video__option ${selectedVideoId === video.id ? 'video__option--active' : ''}`}
+                onClick={() => setSelectedVideoId(video.id)}
+              >
+                <div>
+                  <p className="video__title">{video.title}</p>
+                  <p className="video__desc">{video.description}</p>
+                </div>
+                <span aria-hidden>▶</span>
+              </button>
+            ))}
+          </div>
+          <div className="video__player" aria-label={`Now playing ${selectedVideo.title}`}>
+            <div className="video__frame">
+              <iframe
+                title={selectedVideo.title}
+                src={`${selectedVideo.embedUrl}?rel=0`}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            </div>
+            <p className="panel__hint">YouTube embeds are public rips — queue one as lobby music while unlocking tiles.</p>
+          </div>
+        </div>
+      </section>
+
+      <section className="section ecard" id="ecard-lab">
+        <div className="section__header">
+          <h2>E-Card Designer Lab</h2>
+          <p className="section__sub">Spin up tacky printable greetings and download them as a mini HTML you can save or print.</p>
+        </div>
+        <div className="ecard__grid">
+          <div className="ecard__form">
+            <label className="panel__label" htmlFor="ecard-template">
+              Template
+            </label>
+            <select
+              id="ecard-template"
+              value={ecardTemplateId}
+              onChange={(event) => setEcardTemplateId(event.target.value)}
+            >
+              {ecardTemplates.map((template) => (
+                <option key={template.id} value={template.id}>
+                  {template.name}
+                </option>
+              ))}
+            </select>
+            <label className="panel__label" htmlFor="ecard-to">
+              To
+            </label>
+            <input id="ecard-to" value={ecardTo} onChange={(event) => setEcardTo(event.target.value)} />
+            <label className="panel__label" htmlFor="ecard-message">
+              Message
+            </label>
+            <textarea
+              id="ecard-message"
+              value={ecardMessage}
+              onChange={(event) => setEcardMessage(event.target.value)}
+              rows={4}
+            />
+            <label className="panel__label" htmlFor="ecard-from">
+              From
+            </label>
+            <input id="ecard-from" value={ecardFrom} onChange={(event) => setEcardFrom(event.target.value)} />
+            <div className="panel__actions">
+              <button type="button" className="btn btn-primary" onClick={handleDownloadEcard}>
+                Download HTML
+              </button>
+              <button type="button" className="btn btn-ghost" onClick={handlePrintEcard}>
+                Open print view
+              </button>
+            </div>
+            <p className="panel__hint">Your card stays local — the download is a self-contained HTML you can reopen or print.</p>
+          </div>
+          <div className="ecard__preview" aria-label="E-card preview">
+            <div
+              className="ecard__canvas"
+              style={{
+                background: selectedTemplate.background,
+                border: selectedTemplate.border
+              }}
+            >
+              <p className="ecard__title" style={{ color: selectedTemplate.accent }}>
+                CRT Plaza Greetings
+              </p>
+              <p className="ecard__to">To: {ecardTo}</p>
+              <p className="ecard__message">{ecardMessage}</p>
+              <p className="ecard__from">— {ecardFrom}</p>
+            </div>
+          </div>
         </div>
       </section>
 
