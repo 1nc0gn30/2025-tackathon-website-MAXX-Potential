@@ -1,20 +1,22 @@
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
 :root {
-  color: #f7f1e1;
-  background-color: #0b0d14;
-  font-family: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+  color: #fff9f3;
+  background-color: #0e1205;
+  font-family: 'Space Grotesk', 'Comic Sans MS', 'Comic Sans', system-ui, -apple-system, sans-serif;
   line-height: 1.6;
   font-weight: 400;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
-  --mint: #9effe8;
-  --hot-pink: #ff5fd2;
-  --gold: #ffd166;
-  --evergreen: #0cb472;
-  --midnight: #0b0d14;
-  --frost: #b7d7ff;
-  --purple: #a48bff;
+  --mint: #98ffb3;
+  --hot-pink: #ff2fd2;
+  --gold: #ffe873;
+  --evergreen: #1a8a3b;
+  --midnight: #05120e;
+  --frost: #d3f5ff;
+  --purple: #c15bff;
+  --candy: #ff3a3a;
+  --candy-cream: #fff1dc;
 }
 
 a {
@@ -32,11 +34,11 @@ a:hover {
 body {
   margin: 0;
   min-height: 100vh;
-  background: radial-gradient(circle at 10% 20%, rgba(255, 95, 210, 0.12), transparent 35%),
-    radial-gradient(circle at 90% 10%, rgba(158, 255, 232, 0.12), transparent 32%),
-    radial-gradient(circle at 50% 80%, rgba(255, 209, 102, 0.14), transparent 30%),
-    #0b0d14;
-  color: #f7f1e1;
+  background: repeating-linear-gradient(135deg, rgba(255, 58, 58, 0.18) 0 30px, rgba(255, 255, 255, 0.14) 30px 60px),
+    radial-gradient(circle at 10% 20%, rgba(255, 47, 210, 0.2), transparent 32%),
+    radial-gradient(circle at 90% 10%, rgba(152, 255, 196, 0.18), transparent 32%),
+    linear-gradient(180deg, #0a160c, #12210f);
+  color: #fff9f3;
 }
 
 #root {
