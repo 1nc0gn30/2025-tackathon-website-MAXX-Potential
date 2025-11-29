@@ -4,6 +4,18 @@
   padding-bottom: 4rem;
 }
 
+.page::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at 10% 10%, rgba(255, 95, 210, 0.08), transparent 35%),
+    radial-gradient(circle at 80% 15%, rgba(12, 180, 114, 0.08), transparent 30%),
+    repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0 12px, rgba(255, 95, 210, 0.08) 12px 24px, rgba(12, 180, 114, 0.08) 24px 36px);
+  opacity: 0.6;
+  pointer-events: none;
+  z-index: 0;
+}
+
 .scanline {
   pointer-events: none;
   position: fixed;
@@ -38,6 +50,19 @@
   animation: twinkle 3s ease-in-out infinite alternate;
 }
 
+.snow-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.4) 1px, transparent 1px),
+    radial-gradient(rgba(255, 255, 255, 0.2) 1px, transparent 1px);
+  background-size: 180px 180px, 120px 120px;
+  background-position: 0 0, 60px 60px;
+  animation: snowfall 14s linear infinite;
+  mix-blend-mode: screen;
+  z-index: 1;
+}
+
 @keyframes twinkle {
   0% {
     opacity: 0.18;
@@ -46,6 +71,15 @@
   100% {
     opacity: 0.35;
     transform: translateY(1px);
+  }
+}
+
+@keyframes snowfall {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(40px);
   }
 }
 
@@ -153,6 +187,16 @@
   transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease;
 }
 
+.btn-start {
+  margin-top: 0.5rem;
+  width: 100%;
+  background: linear-gradient(90deg, #ff5fd2, #ffd166, #9effe8);
+  color: #0b0d14;
+  font-family: 'Press Start 2P', sans-serif;
+  font-size: 0.75rem;
+  box-shadow: 0 8px 18px rgba(255, 95, 210, 0.35);
+}
+
 .btn-primary {
   background: linear-gradient(120deg, #ff5fd2, #ffd166);
   color: #0b0d14;
@@ -229,9 +273,11 @@
 .window__footer {
   padding: 0.85rem 1.2rem;
   background: rgba(255, 255, 255, 0.04);
-  font-weight: 600;
+  font-weight: 700;
   color: var(--frost);
   letter-spacing: 0.04em;
+  display: grid;
+  gap: 0.45rem;
 }
 
 .terminal {
@@ -486,6 +532,106 @@
   color: #e8f1ff;
 }
 
+.santa {
+  border: 2px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(120deg, rgba(255, 95, 210, 0.08), rgba(12, 180, 114, 0.08)), rgba(11, 13, 20, 0.7);
+  box-shadow: 0 16px 55px rgba(0, 0, 0, 0.45);
+}
+
+.santa__layout {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 1rem;
+}
+
+.santa__viewer {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.viewer__frame {
+  position: relative;
+  border-radius: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  background: #0e1021;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05), 0 16px 38px rgba(0, 0, 0, 0.45);
+}
+
+.viewer__frame iframe {
+  width: 100%;
+  height: 320px;
+  border: 0;
+  display: block;
+}
+
+.viewer__badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: linear-gradient(90deg, #ffd166, #ff5fd2);
+  color: #0b0d14;
+  padding: 0.45rem 0.75rem;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: 0.85rem;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.35);
+}
+
+.viewer__caption {
+  color: #f7f1e1;
+}
+
+.tracker-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.santa__details {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.santa__card.secondary {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 209, 102, 0.12));
+}
+
+.santa__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.santa__list li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.65rem;
+  align-items: center;
+  padding: 0.65rem 0.7rem;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.santa__time {
+  font-weight: 800;
+  color: var(--gold);
+}
+
+.santa__city {
+  font-weight: 800;
+  color: var(--mint);
+  margin: 0;
+}
+
+.santa__note {
+  color: #e8f1ff;
+  margin: 0.15rem 0 0;
+}
+
 .prize-grid {
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 }
@@ -532,6 +678,30 @@
   justify-content: flex-end;
 }
 
+.contact {
+  background: linear-gradient(135deg, rgba(12, 180, 114, 0.12), rgba(255, 95, 210, 0.1));
+  border: 2px dashed rgba(255, 255, 255, 0.18);
+}
+
+.contact__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 0.85rem;
+}
+
+.contact__card {
+  background: rgba(11, 13, 20, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  min-height: 180px;
+  display: grid;
+  align-content: space-between;
+  gap: 0.6rem;
+}
+
+.contact__note {
+  color: #e8f1ff;
+}
+
 .footer {
   margin: 0 1.5rem 1.5rem;
 }
@@ -554,7 +724,8 @@
   }
 
   .challenges,
-  .cta__content {
+  .cta__content,
+  .santa__layout {
     grid-template-columns: 1fr;
   }
 }
@@ -569,5 +740,9 @@
 
   .ticker__inner {
     font-size: 0.55rem;
+  }
+
+  .viewer__frame iframe {
+    height: 220px;
   }
 }
