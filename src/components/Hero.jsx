@@ -10,40 +10,43 @@ const tickerLines = [
 
 const pixelScenes = [
   {
-    name: 'Snowy Main Street',
-    description: 'A soft snowfall over tiny shop windows and a neon tree.',
+    name: 'Gingerbread Grid Plaza',
+    description: 'Cookie rooflines, neon frosting, and gift wrap smoke drifting upward.',
     gradient:
-      'linear-gradient(180deg, #0c1428 0%, #152848 35%, #1d3c63 60%, #0f1c34 100%), repeating-linear-gradient(0deg, rgba(255,255,255,0.08) 0 2px, transparent 2px 6px)',
+      "linear-gradient(180deg, rgba(26, 12, 10, 0.9) 0%, rgba(37, 18, 12, 0.85) 35%, rgba(48, 26, 22, 0.92) 60%, #0f1c34 100%), url('https://images.unsplash.com/photo-1544216263-3426a06f8b20?auto=format&fit=crop&w=1400&q=80')",
     tiles:
-      'linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px), linear-gradient(0deg, rgba(255,255,255,0.06) 1px, transparent 1px)',
-    accent: '#b3f0ff'
+      'linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px), linear-gradient(0deg, rgba(255, 232, 115, 0.1) 1px, transparent 1px)',
+    accent: '#ffcf9f',
+    stickers: [
+      "url('https://images.unsplash.com/photo-1543589077-47d81606c1bf?auto=format&fit=crop&w=600&q=80')",
+      "url('https://images.unsplash.com/photo-1481391032119-d89fee407e44?auto=format&fit=crop&w=700&q=80')"
+    ]
   },
   {
-    name: 'Candy Cane Crossing',
-    description: 'Peppermint streetlamps, pixel garland, and cozy window glow.',
+    name: 'Candy Cane Broadcast',
+    description: 'Peppermint satellites beaming carols to every CRT in the mall.',
     gradient:
-      'linear-gradient(180deg, #1b1028 0%, #2a1c3d 40%, #3c214d 70%, #1b0e28 100%), repeating-linear-gradient(90deg, rgba(255,115,199,0.18) 0 4px, transparent 4px 12px)',
+      "linear-gradient(180deg, rgba(28, 6, 24, 0.95) 0%, rgba(45, 14, 35, 0.85) 40%, rgba(61, 18, 47, 0.85) 70%, #1b0e28 100%), url('https://images.unsplash.com/photo-1482517967863-00e15c9b44be?auto=format&fit=crop&w=1400&q=80')",
     tiles:
       'linear-gradient(90deg, rgba(255,231,115,0.12) 1px, transparent 1px), linear-gradient(0deg, rgba(255,115,199,0.14) 1px, transparent 1px)',
-    accent: '#ffd2f2'
+    accent: '#ffd2f2',
+    stickers: [
+      "url('https://images.unsplash.com/photo-1482173074468-5fd3c0c8e8c8?auto=format&fit=crop&w=700&q=80')",
+      "url('https://images.unsplash.com/photo-1518309726374-4e84d95cdc37?auto=format&fit=crop&w=500&q=80')"
+    ]
   },
   {
-    name: 'Toy Workshop Row',
-    description: 'Workshop roofs shimmering under low northern lights.',
+    name: 'Arctic Hologram Stage',
+    description: 'Aurora LEDs, ice projectors, and tacky toy soldiers marching in sync.',
     gradient:
-      'linear-gradient(180deg, #0c1d1f 0%, #0c2b35 35%, #13414e 70%, #0a1a26 100%), radial-gradient(circle at 20% 20%, rgba(0,255,200,0.18), transparent 40%), radial-gradient(circle at 80% 30%, rgba(255,231,115,0.2), transparent 35%)',
+      "linear-gradient(180deg, rgba(12, 29, 31, 0.92) 0%, rgba(12, 43, 53, 0.9) 35%, rgba(10, 26, 38, 0.9) 100%), url('https://images.unsplash.com/photo-1508747703725-719777637510?auto=format&fit=crop&w=1400&q=80')",
     tiles:
-      'linear-gradient(90deg, rgba(0,255,200,0.12) 1px, transparent 1px), linear-gradient(0deg, rgba(255,231,115,0.1) 1px, transparent 1px)',
-    accent: '#9effe8'
-  },
-  {
-    name: 'Frozen Lake Lookout',
-    description: 'Quiet ice reflections with aurora pixels drifting by.',
-    gradient:
-      'linear-gradient(180deg, #0c0f24 0%, #121a35 30%, #1c2e52 65%, #0d182e 100%), radial-gradient(circle at 70% 20%, rgba(111,183,255,0.25), transparent 35%)',
-    tiles:
-      'linear-gradient(90deg, rgba(111,183,255,0.14) 1px, transparent 1px), linear-gradient(0deg, rgba(255,255,255,0.08) 1px, transparent 1px)',
-    accent: '#b5ceff'
+      'linear-gradient(90deg, rgba(0,255,200,0.12) 1px, transparent 1px), linear-gradient(0deg, rgba(111,183,255,0.14) 1px, transparent 1px)',
+    accent: '#9effe8',
+    stickers: [
+      "url('https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?auto=format&fit=crop&w=700&q=80')",
+      "url('https://images.unsplash.com/photo-1508179522353-11ba468c4a1f?auto=format&fit=crop&w=600&q=80')"
+    ]
   }
 ]
 
@@ -392,7 +395,12 @@ const Hero = ({ progress, unlockCount, totalStations, systemMessage }) => {
   }
 
   const toggleFilter = (id) => {
-    setFilters((prev) => ({ ...prev, [id]: !prev[id] }))
+    setFilters((prev) => {
+      const nextValue = !prev[id]
+      const next = { ...prev, [id]: nextValue }
+      setFortune(`Filter “${filterOptions.find((option) => option.id === id)?.label ?? id}” ${nextValue ? 'activated' : 'muted'}.`)
+      return next
+    })
   }
 
   const handlePullFortune = () => {
@@ -406,11 +414,16 @@ const Hero = ({ progress, unlockCount, totalStations, systemMessage }) => {
         <div className="hero__badge">Gentle winter lobby • Vibes dialed down</div>
         <div className="hero__scene-frame" style={{ '--scene-accent': currentScene.accent }}>
           <div
-            className="hero__scene"
+            className={`hero__scene${filters.glow ? ' hero__scene--glow' : ''}${filters.pixels ? ' hero__scene--pixel' : ''}${filters.snow ? ' hero__scene--snow' : ' hero__scene--calm'}`}
             style={{ backgroundImage: currentScene.gradient, '--tile-layer': currentScene.tiles }}
           >
             <div className="hero__scene-overlay" aria-hidden />
             <div className="hero__scene-horizon" aria-hidden />
+            <div className="hero__scene-collage" aria-hidden>
+              <div className="collage__panel" style={{ backgroundImage: currentScene.stickers[0] }} />
+              <div className="collage__panel collage__panel--alt" style={{ backgroundImage: currentScene.stickers[1] }} />
+              <div className="collage__garland" />
+            </div>
             <div className="hero__scene-title">
               <p className="eyebrow">Pixel scenery</p>
               <h2>{currentScene.name}</h2>
@@ -446,6 +459,18 @@ const Hero = ({ progress, unlockCount, totalStations, systemMessage }) => {
       </div>
 
       <div className="hero__content">
+        <div className="hero__banner">
+          <div className="hero__banner-lights" aria-hidden />
+          <div>
+            <p className="eyebrow">Holiday Systems Online</p>
+            <h2 className="banner__headline">Tacky North Pole Control Deck</h2>
+            <p className="banner__lede">
+              CRT tinsel, glitchy wreaths, and a mall-wide broadcast ribbon sit above the plaza. Swap filters to see the banner
+              react in real time.
+            </p>
+          </div>
+          <div className="banner__badge">Festive uptime 99.97%</div>
+        </div>
         <p className="eyebrow">MAXX Potential presents</p>
         <h1>
           North Pole 199X
@@ -475,6 +500,15 @@ const Hero = ({ progress, unlockCount, totalStations, systemMessage }) => {
           <div className="chip">🧦 Stocking count: +{unlockCount}</div>
           <div className="chip">✨ Active filters: {activeFilters.length}</div>
           <div className="chip">🌨️ Scene: {currentScene.name}</div>
+        </div>
+
+        <div className="hero__filter-readout">
+          <span className="filter-readout__label">Live stack:</span>
+          <span className="filter-readout__value">
+            {activeFilters.length > 0
+              ? activeFilters.map((option) => option.label).join(' • ')
+              : 'Filters muted — pure VHS view'}
+          </span>
         </div>
 
         <div className="hero__cta">
