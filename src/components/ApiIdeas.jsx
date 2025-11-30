@@ -1,3 +1,5 @@
+import './ApiIdeas.css'
+
 const ApiIdeas = ({ christmasApis }) => {
   const snowfallHours = [
     { label: '6a', value: 0.2 },

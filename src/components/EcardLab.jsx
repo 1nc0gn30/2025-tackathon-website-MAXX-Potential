@@ -1,3 +1,5 @@
+import './EcardLab.css'
+
 const EcardLab = ({
   ecardTemplates,
   ecardTemplateId,

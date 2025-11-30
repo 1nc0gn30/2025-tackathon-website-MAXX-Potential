@@ -1,3 +1,5 @@
+import './VideoLounge.css'
+
 const VideoLounge = ({ videoOptions, selectedVideoId, setSelectedVideoId, selectedVideo }) => {
   return (
     <section className="section video" id="video-lounge">

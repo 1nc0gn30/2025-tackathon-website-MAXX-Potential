@@ -1,3 +1,5 @@
+import './Tracker.css'
+
 const Tracker = ({ trackerState, trackerError, santaSnapshot, lastTrackerUpdate, refreshSanta }) => {
   const statusLabel =
     trackerState === 'ready'
