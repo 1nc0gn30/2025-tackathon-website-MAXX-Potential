@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import './Hero.css'
 
 const tickerLines = [
   '✨ Glitter snow engaged • fiber optics pulsing • mall Santa ETA: soonish',
@@ -20,16 +21,19 @@ const fortunes = [
 
 const garlandBulbs = new Array(18).fill(null)
 
-const santaMoments = [
-  { icon: '🛷', label: 'Santa radar', detail: 'Sleigh spotted over CRT Plaza' },
-  { icon: '🎄', label: 'Tree glow', detail: 'RGB sparkle mode engaged' },
-  { icon: '🍬', label: 'Peppermint WiFi', detail: 'Full bars for elf chat' }
+const effectActions = [
+  { icon: '🛷', label: 'Santa radar', detail: 'Sleigh spotted over CRT Plaza', id: 'radar' },
+  { icon: '🎄', label: 'Tree glow', detail: 'RGB sparkle mode engaged', id: 'tree' },
+  { icon: '🍬', label: 'Candy lane boost', detail: 'Peppermint WiFi fully charged', id: 'candy' },
+  { icon: '❄️', label: 'Snow machine', detail: 'Turbo swirl engaged', id: 'snow' },
+  { icon: '💿', label: 'VHS filter', detail: 'Heavily warped nostalgia', id: 'vhs' }
 ]
 
 const Hero = ({ progress, unlockCount, totalStations, systemMessage }) => {
   const [tickerIndex, setTickerIndex] = useState(0)
   const [vibeIndex, setVibeIndex] = useState(0)
   const [fortune, setFortune] = useState('Press a glowing button to dial the Santa hotline and pull a tacky fortune.')
+  const [effects, setEffects] = useState({ radar: true, tree: false, candy: false, snow: true, vhs: false })
 
   useEffect(() => {
     const id = setInterval(() => setTickerIndex((prev) => (prev + 1) % tickerLines.length), 3600)
@@ -38,6 +42,20 @@ const Hero = ({ progress, unlockCount, totalStations, systemMessage }) => {
 
   const tickerMessage = useMemo(() => tickerLines[tickerIndex], [tickerIndex])
   const vibeMode = useMemo(() => vibeModes[vibeIndex], [vibeIndex])
+
+  const activeEffects = useMemo(() => effectActions.filter((action) => effects[action.id]), [effects])
+  const snowflakes = effects.snow ? 34 : 20
+
+  const toggleEffect = (id) => {
+    setEffects((prev) => {
+      const next = { ...prev, [id]: !prev[id] }
+      if (!prev[id]) {
+        setVibeIndex((prevIndex) => (prevIndex + 1) % vibeModes.length)
+        setFortune('Effect synced — plaza lights match the new vibe mode!')
+      }
+      return next
+    })
+  }
 
   const handleCycleVibe = () => {
     setVibeIndex((prev) => (prev + 1) % vibeModes.length)
@@ -49,17 +67,29 @@ const Hero = ({ progress, unlockCount, totalStations, systemMessage }) => {
   }
 
   return (
-    <header className="hero">
+    <header
+      className={`hero${effects.snow ? ' hero--snowstorm' : ''}${effects.vhs ? ' hero--vhs' : ''}${effects.tree ? ' hero--tree' : ''}${effects.radar ? ' hero--radar' : ''}${effects.candy ? ' hero--candy' : ''}`}
+    >
       <div className="hero__ribbon">🎅 Santa certified • Holiday hotline live • Glitter mode steady</div>
+      <div className="hero__ornaments" aria-hidden>
+        <span>🧦</span>
+        <span>🌟</span>
+        <span>🍭</span>
+      </div>
       <div className="hero__aurora" aria-hidden />
       <div className="hero__halo" aria-hidden />
+      <div className="hero__tree-glow" aria-hidden />
+      <div className="hero__radar" aria-hidden />
+      <div className="hero__candy" aria-hidden />
+      <div className="hero__vhs" aria-hidden />
+      <div className="hero__snowburst" aria-hidden />
       <div className="hero__garland" aria-hidden>
         {garlandBulbs.map((_, index) => (
           <span key={index} className="garland__bulb" aria-hidden />
         ))}
       </div>
       <div className="hero__snow" aria-hidden>
-        {Array.from({ length: 20 }).map((_, index) => (
+        {Array.from({ length: snowflakes }).map((_, index) => (
           <span key={index} className="snowflake" style={{ animationDelay: `${index * 0.15}s` }} />
         ))}
       </div>
@@ -74,22 +104,28 @@ const Hero = ({ progress, unlockCount, totalStations, systemMessage }) => {
           secret interactions.
         </p>
         <div className="hero__meta-grid" aria-label="Santa status and signals">
-          {santaMoments.map((moment) => (
-            <div key={moment.label} className="meta-card">
-              <span className="meta-card__icon" aria-hidden>
+          {effectActions.map((moment) => (
+            <button
+              key={moment.label}
+              type="button"
+              className="effect-card"
+              onClick={() => toggleEffect(moment.id)}
+              aria-pressed={effects[moment.id]}
+            >
+              <span className="effect-card__icon" aria-hidden>
                 {moment.icon}
               </span>
               <div>
-                <p className="meta-card__label">{moment.label}</p>
-                <p className="meta-card__detail">{moment.detail}</p>
+                <p className="effect-card__label">{moment.label}</p>
+                <p className="effect-card__detail">{moment.detail}</p>
               </div>
-            </div>
+              <span className="effect-card__pulse" aria-hidden />
+            </button>
           ))}
         </div>
         <div className="hero__chips">
-          <div className="chip">❄️ Snow machine: turbo swirl</div>
-          <div className="chip">💿 VHS filter: heavily warped</div>
           <div className="chip">🧦 Stocking count: +{unlockCount}</div>
+          <div className="chip">✨ Active vibes: {activeEffects.length}</div>
         </div>
         <div className="hero__cta">
           <a className="btn btn-primary" href="#scene">
@@ -98,9 +134,14 @@ const Hero = ({ progress, unlockCount, totalStations, systemMessage }) => {
           <a className="btn btn-ghost" href="#cheat-codes">
             View cheat sheet
           </a>
-          <button className="btn btn-secondary" type="button" onClick={handleCycleVibe}>
-            Cycle vibe ➜ {vibeMode}
+          <button className="btn btn-secondary btn-cycle" type="button" onClick={handleCycleVibe}>
+            <span>Cycle vibe ➜ {vibeMode}</span>
           </button>
+        </div>
+        <div className="hero__effect-readout">
+          <span aria-hidden>🎛️</span>
+          <span>Effect grid synced</span>
+          <span className="hero__vibe-tag">{activeEffects.map((action) => action.label).join(' • ') || 'idle'}</span>
         </div>
         <div className="hero__ticker" role="status" aria-live="polite">
           <div className="ticker__glow" aria-hidden />

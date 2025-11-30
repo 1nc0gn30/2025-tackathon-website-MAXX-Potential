@@ -1,3 +1,5 @@
+import './UtilitiesSection.css'
+
 const UtilitiesSection = ({
   profile,
   handleProfileChange,

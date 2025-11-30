@@ -1,4 +1,5 @@
 import Tracker from './Tracker'
+import './SceneSection.css'
 
 const SceneSection = ({
   stations,

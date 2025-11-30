@@ -1,3 +1,5 @@
+import './UnlocksSection.css'
+
 const UnlocksSection = ({ stations, unlocks }) => {
   return (
     <section className="section unlocks" id="unlocks">

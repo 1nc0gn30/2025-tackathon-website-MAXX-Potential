@@ -1,3 +1,5 @@
+import './CheatsSection.css'
+
 const CheatsSection = ({ cheatSheet }) => {
   return (
     <section className="section cheats" id="cheat-codes">
