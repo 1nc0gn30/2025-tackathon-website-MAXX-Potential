@@ -9,7 +9,54 @@ const tickerLines = [
   '🔔 Bell choir warming up with 16-bit sleigh bells and SNES reverb'
 ]
 
-const vibeModes = ['Candy cane rave', 'Mall fountain glow', 'Blizzard of glitter', 'Arcade roof snowstorm']
+const vibePresets = [
+  {
+    name: 'Candy cane rave',
+    primary: '#ff73c7',
+    secondary: '#7df5ff',
+    accent: '#ffe873',
+    jitter: 1.4,
+    snowDensity: 48,
+    warp: 9,
+    sparkle: true,
+    neon: 'conic-gradient(from 40deg, #ff2fd2, #00ffc8, #ffe873, #ff2fd2)'
+  },
+  {
+    name: 'Mall fountain glow',
+    primary: '#7ef7ff',
+    secondary: '#47ff9c',
+    accent: '#ff9ff3',
+    jitter: 1.1,
+    snowDensity: 36,
+    warp: 7,
+    sparkle: false,
+    neon: 'conic-gradient(from 90deg, #7ef7ff, #47ff9c, #ffe873, #7ef7ff)'
+  },
+  {
+    name: 'Blizzard of glitter',
+    primary: '#ffe873',
+    secondary: '#ff2fd2',
+    accent: '#c3fffb',
+    jitter: 1.65,
+    snowDensity: 56,
+    warp: 11,
+    sparkle: true,
+    neon: 'conic-gradient(from 180deg, #ffe873, #ff2fd2, #9effe8, #ffe873)'
+  },
+  {
+    name: 'Arcade roof snowstorm',
+    primary: '#9effe8',
+    secondary: '#ff66ff',
+    accent: '#8dd0ff',
+    jitter: 1.25,
+    snowDensity: 44,
+    warp: 10,
+    sparkle: true,
+    neon: 'conic-gradient(from 250deg, #9effe8, #ff66ff, #ffe873, #9effe8)'
+  }
+]
+
+const vibeModes = vibePresets.map((preset) => preset.name)
 
 const fortunes = [
   'Your wishlist gets fast-tracked — Santa hacked the pager.',
@@ -17,6 +64,15 @@ const fortunes = [
   'Mall pretzel coupons manifest when you shout “HO HO HACK”.',
   'You gain +5 charisma for every string light plugged in tonight.',
   'CRT Plaza disco ball grants one bonus trivia hint — use it wisely.'
+]
+
+const terminalLines = [
+  'Connecting to NorthPoleNet…',
+  'Loading Christmas Spirit v2.1…',
+  'Decrypting Santa’s Naughty List…',
+  'Rendering 256-color snowflakes…',
+  'Frosting system memory…',
+  'Booting Holiday.exe…'
 ]
 
 const garlandBulbs = new Array(18).fill(null)
@@ -34,6 +90,11 @@ const Hero = ({ progress, unlockCount, totalStations, systemMessage }) => {
   const [vibeIndex, setVibeIndex] = useState(0)
   const [fortune, setFortune] = useState('Press a glowing button to dial the Santa hotline and pull a tacky fortune.')
   const [effects, setEffects] = useState({ radar: true, tree: false, candy: false, snow: true, vhs: false })
+  const [terminalIndex, setTerminalIndex] = useState(0)
+  const [terminalText, setTerminalText] = useState('> dialing mall modem…')
+  const [terminalHistory, setTerminalHistory] = useState(['> scene warmed up • snow swirl ON', '> trivia link cables attached'])
+  const [rebooting, setRebooting] = useState(false)
+  const [sparklePos, setSparklePos] = useState({ x: 50, y: 50 })
 
   useEffect(() => {
     const id = setInterval(() => setTickerIndex((prev) => (prev + 1) % tickerLines.length), 3600)
@@ -42,9 +103,34 @@ const Hero = ({ progress, unlockCount, totalStations, systemMessage }) => {
 
   const tickerMessage = useMemo(() => tickerLines[tickerIndex], [tickerIndex])
   const vibeMode = useMemo(() => vibeModes[vibeIndex], [vibeIndex])
+  const currentVibe = useMemo(() => vibePresets[vibeIndex % vibePresets.length], [vibeIndex])
 
   const activeEffects = useMemo(() => effectActions.filter((action) => effects[action.id]), [effects])
-  const snowflakes = effects.snow ? 34 : 20
+  const snowflakes = effects.snow ? currentVibe.snowDensity : 20
+
+  useEffect(() => {
+    let charIndex = 0
+    const line = terminalLines[terminalIndex % terminalLines.length]
+    const raf = requestAnimationFrame(() => setTerminalText('> '))
+    const typer = setInterval(() => {
+      charIndex += 1
+      setTerminalText((prev) => `${prev}${line.charAt(charIndex - 1)}`)
+      if (charIndex >= line.length) {
+        clearInterval(typer)
+      }
+    }, 55)
+
+    const hold = setTimeout(() => {
+      setTerminalHistory((prev) => [`> ${line}`, ...prev].slice(0, 6))
+      setTerminalIndex((prev) => (prev + 1) % terminalLines.length)
+    }, line.length * 55 + 900)
+
+    return () => {
+      cancelAnimationFrame(raf)
+      clearInterval(typer)
+      clearTimeout(hold)
+    }
+  }, [terminalIndex])
 
   const toggleEffect = (id) => {
     setEffects((prev) => {
@@ -58,7 +144,11 @@ const Hero = ({ progress, unlockCount, totalStations, systemMessage }) => {
   }
 
   const handleCycleVibe = () => {
+    setRebooting(true)
+    setTimeout(() => setRebooting(false), 900)
     setVibeIndex((prev) => (prev + 1) % vibeModes.length)
+    setEffects((prev) => ({ ...prev, vhs: true, tree: true, candy: true }))
+    setFortune('Vibe cycled — CRT plaza rebooted with new neon snow physics!')
   }
 
   const handlePullFortune = () => {
@@ -66,11 +156,31 @@ const Hero = ({ progress, unlockCount, totalStations, systemMessage }) => {
     setFortune(next)
   }
 
+  const handleMouseMove = (event) => {
+    const rect = event.currentTarget.getBoundingClientRect()
+    const x = ((event.clientX - rect.left) / rect.width) * 100
+    const y = ((event.clientY - rect.top) / rect.height) * 100
+    setSparklePos({ x, y })
+  }
+
   return (
     <header
-      className={`hero${effects.snow ? ' hero--snowstorm' : ''}${effects.vhs ? ' hero--vhs' : ''}${effects.tree ? ' hero--tree' : ''}${effects.radar ? ' hero--radar' : ''}${effects.candy ? ' hero--candy' : ''}`}
+      className={`hero${effects.snow ? ' hero--snowstorm' : ''}${effects.vhs ? ' hero--vhs' : ''}${effects.tree ? ' hero--tree' : ''}${effects.radar ? ' hero--radar' : ''}${effects.candy ? ' hero--candy' : ''}${currentVibe.sparkle ? ' hero--sparkle' : ''}${rebooting ? ' hero--rebooting' : ''}`}
+      style={{
+        '--vibe-primary': currentVibe.primary,
+        '--vibe-secondary': currentVibe.secondary,
+        '--vibe-accent': currentVibe.accent,
+        '--vhs-jitter': currentVibe.jitter,
+        '--crt-warp': `${currentVibe.warp}px`,
+        '--sparkle-x': `${sparklePos.x}%`,
+        '--sparkle-y': `${sparklePos.y}%`,
+        '--vibe-neon': currentVibe.neon
+      }}
+      onMouseMove={handleMouseMove}
     >
       <div className="hero__ribbon">🎅 Santa certified • Holiday hotline live • Glitter mode steady</div>
+      <div className="hero__parallax hero__parallax--back" aria-hidden />
+      <div className="hero__parallax hero__parallax--front" aria-hidden />
       <div className="hero__ornaments" aria-hidden>
         <span>🧦</span>
         <span>🌟</span>
@@ -82,6 +192,16 @@ const Hero = ({ progress, unlockCount, totalStations, systemMessage }) => {
       <div className="hero__radar" aria-hidden />
       <div className="hero__candy" aria-hidden />
       <div className="hero__vhs" aria-hidden />
+      <div className="hero__chromatic" aria-hidden />
+      <div className="hero__pixel-snow" aria-hidden />
+      <div className="hero__light-flicker" aria-hidden />
+      <div className="hero__rainbow" aria-hidden />
+      <div className="hero__bloom" aria-hidden />
+      <div className="hero__starbursts" aria-hidden />
+      <div className="hero__lensflare" aria-hidden />
+      <div className="hero__mouse-glitter" aria-hidden />
+      <div className="hero__crt-reboot" aria-hidden />
+      <div className="hero__star-wipe" aria-hidden />
       <div className="hero__snowburst" aria-hidden />
       <div className="hero__garland" aria-hidden>
         {garlandBulbs.map((_, index) => (
@@ -198,8 +318,12 @@ const Hero = ({ progress, unlockCount, totalStations, systemMessage }) => {
       <div className="hero__panel">
         <div className="panel__title">CRT Status Monitor</div>
         <div className="panel__body">
-          <p className="terminal">&gt; scene warmed up • snow swirl ON</p>
-          <p className="terminal">&gt; trivia link cables attached</p>
+          <div className="terminal terminal--glow">{terminalText}</div>
+          {terminalHistory.map((line, index) => (
+            <p key={index} className="terminal terminal--history">
+              {line}
+            </p>
+          ))}
           <p className="terminal">&gt; unlock threshold: {progress}%</p>
           <p className="terminal">&gt; message: {systemMessage}</p>
           <p className="terminal">&gt; marquee vibe: {vibeMode}</p>
