@@ -20,6 +20,12 @@ const fortunes = [
 
 const garlandBulbs = new Array(18).fill(null)
 
+const santaMoments = [
+  { icon: '🛷', label: 'Santa radar', detail: 'Sleigh spotted over CRT Plaza' },
+  { icon: '🎄', label: 'Tree glow', detail: 'RGB sparkle mode engaged' },
+  { icon: '🍬', label: 'Peppermint WiFi', detail: 'Full bars for elf chat' }
+]
+
 const Hero = ({ progress, unlockCount, totalStations, systemMessage }) => {
   const [tickerIndex, setTickerIndex] = useState(0)
   const [vibeIndex, setVibeIndex] = useState(0)
@@ -44,6 +50,7 @@ const Hero = ({ progress, unlockCount, totalStations, systemMessage }) => {
 
   return (
     <header className="hero">
+      <div className="hero__ribbon">🎅 Santa certified • Holiday hotline live • Glitter mode steady</div>
       <div className="hero__aurora" aria-hidden />
       <div className="hero__halo" aria-hidden />
       <div className="hero__garland" aria-hidden>
@@ -66,6 +73,19 @@ const Hero = ({ progress, unlockCount, totalStations, systemMessage }) => {
           A tacky, over-saturated Christmas world built like a 90s mall kiosk. Beat quick trivia to unlock neon upgrades and
           secret interactions.
         </p>
+        <div className="hero__meta-grid" aria-label="Santa status and signals">
+          {santaMoments.map((moment) => (
+            <div key={moment.label} className="meta-card">
+              <span className="meta-card__icon" aria-hidden>
+                {moment.icon}
+              </span>
+              <div>
+                <p className="meta-card__label">{moment.label}</p>
+                <p className="meta-card__detail">{moment.detail}</p>
+              </div>
+            </div>
+          ))}
+        </div>
         <div className="hero__chips">
           <div className="chip">❄️ Snow machine: turbo swirl</div>
           <div className="chip">💿 VHS filter: heavily warped</div>
@@ -86,7 +106,12 @@ const Hero = ({ progress, unlockCount, totalStations, systemMessage }) => {
           <div className="ticker__glow" aria-hidden />
           <div className="ticker__content">
             <span className="ticker__label">Mall broadcast</span>
-            <span className="ticker__message">{tickerMessage}</span>
+            <div className="ticker__window">
+              <div className="ticker__marquee">
+                <span className="ticker__message">{tickerMessage}</span>
+                <span className="ticker__message ticker__message--ghost">{tickerMessage}</span>
+              </div>
+            </div>
           </div>
         </div>
         <div className="progress">
@@ -139,6 +164,10 @@ const Hero = ({ progress, unlockCount, totalStations, systemMessage }) => {
           <p className="terminal">&gt; marquee vibe: {vibeMode}</p>
           <p className="terminal">&gt; fortune queue: {fortune}</p>
         </div>
+      </div>
+      <div className="hero__santa-lane" aria-hidden>
+        <div className="sleigh">🦌🦌🦌🛷</div>
+        <div className="sleigh sleigh--alt">🎅✨🎄</div>
       </div>
     </header>
   )
